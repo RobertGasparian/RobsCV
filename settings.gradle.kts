@@ -24,3 +24,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "RobsCV"
 include(":app")
+include(":core:data")
+include(":core:dsm")
+include(":core:model")
+include(":feature:home")

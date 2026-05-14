@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -37,9 +39,19 @@ android {
     buildFeatures {
         compose = true
     }
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
+    implementation(project(":core:data"))
+    implementation(project(":core:dsm"))
+    implementation(project(":core:model"))
+    implementation(project(":feature:home"))
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
@@ -47,8 +59,21 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    testImplementation(libs.junit)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.coil.compose)
+    implementation(libs.hilt.android)
+    implementation(libs.kotlinx.coroutines.android)
+    ksp(libs.hilt.compiler)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testRuntimeOnly(libs.junit.platform.launcher)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
