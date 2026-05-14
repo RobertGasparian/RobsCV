@@ -20,6 +20,8 @@ composeBom = "2026.02.01"
 mockk = "1.14.9"
 paparazzi = "2.0.0-alpha04"
 retrofit = "3.0.0"
+spotless = "8.4.0"
+ktlint = "1.8.0"
 turbine = "1.2.1"
 
 [libraries]
@@ -62,3 +64,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
