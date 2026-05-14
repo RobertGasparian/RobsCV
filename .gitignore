@@ -1,0 +1,45 @@
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java/Kotlin generated files
+*.class
+
+# Gradle
+.gradle/
+build/
+*/build/
+
+# Local configuration
+local.properties
+*.local
+
+# Android Studio / IntelliJ
+*.iml
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/deploymentTargetDropDown.xml
+.idea/androidTestResultsUserPreferences.xml
+
+# Native build outputs
+.externalNativeBuild/
+.cxx/
+
+# Generated captures and reports
+captures/
+outputs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local Codex skill mirrors are installed machine-locally and should not be vendored.
+.codex/skills/
