@@ -12,6 +12,12 @@ Use Kotlin, Jetpack Compose, Material 3, Material 3 Expressive, single-activity 
 
 Use local static data first when it is enough. Use DataStore for small persistent data such as preferences or UI settings. Use Room when the app has larger structured data that benefits from querying, relations, or offline persistence.
 
+Prefer KMP-friendly libraries, APIs, and architecture choices so the project can move toward Kotlin Multiplatform later with minimal churn. Break this rule only when the KMP-friendly option creates real inconvenience, weak Android ergonomics, or a worse user/developer experience.
+
+For future networking, prefer Ktor Client over Retrofit because Ktor is Kotlin Multiplatform-friendly. Use Retrofit only if an Android-only integration becomes clearly simpler and the tradeoff is worth documenting.
+
+Use Navigation 3 as the default navigation approach. Keep navigation shared-friendly by modeling destinations as serializable route/state objects, avoiding Android `Context`, `Intent`, or framework objects in route definitions, and keeping navigation decisions in state/logic layers where practical rather than burying them inside UI components.
+
 Include meaningful unit tests and UI tests. Prefer Paparazzi for screenshot/UI testing where it gives fast, reliable feedback.
 
 Experimental Android and Jetpack APIs are welcome when they improve the app or demonstrate modern Android skill. Avoid only those libraries or APIs that have obvious bugs, severe instability, or would create more maintenance burden than value.

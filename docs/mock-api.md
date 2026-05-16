@@ -17,5 +17,5 @@ These files model future backend endpoints while keeping the app local-first for
 - `profile`, `skills`, and `experience` are close to the source CV structure.
 - `education` is intentionally more normalized, with reusable institution records and education items that reference them by id.
 - `milestones` stores current learning/professional focus and recent milestones that do not belong to one specific employer or school.
-- When the backend is added, Retrofit DTOs can mirror these JSON shapes.
+- When the backend is added, network DTOs can mirror these JSON shapes and be loaded through the Ktor-based data layer.
 - Room entities do not need to match these responses exactly; map API DTOs into local entities through the data layer.
