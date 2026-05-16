@@ -1,0 +1,689 @@
+{
+  "categories": [
+    {
+      "id": "programming-languages",
+      "name": "Programming Languages"
+    },
+    {
+      "id": "mobile-development",
+      "name": "Mobile Development"
+    },
+    {
+      "id": "architecture-practices",
+      "name": "Architecture & Practices"
+    },
+    {
+      "id": "tools-platforms",
+      "name": "Tools & Platforms"
+    },
+    {
+      "id": "testing-quality-assurance",
+      "name": "Testing & Quality Assurance"
+    }
+  ],
+  "skills": [
+    {
+      "id": "kotlin",
+      "name": "Kotlin",
+      "categoryId": "programming-languages",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": 8,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "architecture",
+        "modern_android"
+      ]
+    },
+    {
+      "id": "java",
+      "name": "Java",
+      "categoryId": "programming-languages",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": 8,
+      "isCore": false,
+      "contexts": [
+        "production",
+        "legacy_android"
+      ]
+    },
+    {
+      "id": "swift",
+      "name": "Swift",
+      "categoryId": "programming-languages",
+      "proficiencyType": "leveled",
+      "level": "familiar",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "cross_platform_collaboration"
+      ]
+    },
+    {
+      "id": "android-sdk",
+      "name": "Android SDK",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": 8,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "platform_apis",
+        "performance"
+      ]
+    },
+    {
+      "id": "android-jetpack",
+      "name": "Android Jetpack",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "modern_android"
+      ]
+    },
+    {
+      "id": "jetpack-compose",
+      "name": "Jetpack Compose",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "ui",
+        "modern_android"
+      ]
+    },
+    {
+      "id": "kotlin-multiplatform",
+      "name": "Kotlin Multiplatform",
+      "shortName": "KMP",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "cross_platform"
+      ]
+    },
+    {
+      "id": "compose-multiplatform",
+      "name": "Compose Multiplatform",
+      "shortName": "CMP",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "cross_platform",
+        "ui"
+      ]
+    },
+    {
+      "id": "coroutines",
+      "name": "Coroutines",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "async"
+      ]
+    },
+    {
+      "id": "kotlin-flow",
+      "name": "Kotlin Flow",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "async",
+        "reactive_streams"
+      ]
+    },
+    {
+      "id": "rxjava-2",
+      "name": "RxJava 2",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "production",
+        "legacy_async"
+      ]
+    },
+    {
+      "id": "room",
+      "name": "Room",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "local_storage"
+      ]
+    },
+    {
+      "id": "rest-api",
+      "name": "REST API",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "networking"
+      ]
+    },
+    {
+      "id": "retrofit",
+      "name": "Retrofit",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "networking",
+        "rest_api"
+      ]
+    },
+    {
+      "id": "datastore",
+      "name": "DataStore",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "production",
+        "local_storage",
+        "preferences"
+      ]
+    },
+    {
+      "id": "material-3",
+      "name": "Material 3",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "ui",
+        "design_system",
+        "modern_android"
+      ]
+    },
+    {
+      "id": "navigation-3",
+      "name": "Navigation 3",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "familiar",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "navigation",
+        "modern_android",
+        "experimental_api"
+      ]
+    },
+    {
+      "id": "baseline-profiles",
+      "name": "Baseline Profiles",
+      "categoryId": "mobile-development",
+      "proficiencyType": "leveled",
+      "level": "familiar",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "performance",
+        "startup_optimization"
+      ]
+    },
+    {
+      "id": "clean-architecture",
+      "name": "Clean Architecture",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "architecture",
+        "modularization",
+        "production"
+      ]
+    },
+    {
+      "id": "mvi",
+      "name": "MVI",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "architecture",
+        "state_management"
+      ]
+    },
+    {
+      "id": "mvvm",
+      "name": "MVVM",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "architecture",
+        "production"
+      ]
+    },
+    {
+      "id": "mvp",
+      "name": "MVP",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "legacy_architecture"
+      ]
+    },
+    {
+      "id": "mvc",
+      "name": "MVC",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "legacy_architecture"
+      ]
+    },
+    {
+      "id": "modularization",
+      "name": "Modularization",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "architecture",
+        "build_scalability",
+        "production"
+      ]
+    },
+    {
+      "id": "dependency-injection",
+      "name": "Dependency Injection",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "architecture",
+        "testability"
+      ]
+    },
+    {
+      "id": "code-refactoring",
+      "name": "Code Refactoring",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "expert",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "legacy_modernization",
+        "architecture"
+      ]
+    },
+    {
+      "id": "ci-cd",
+      "name": "CI/CD",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "devops",
+        "release_engineering"
+      ]
+    },
+    {
+      "id": "agile-scrum",
+      "name": "Agile/Scrum",
+      "categoryId": "architecture-practices",
+      "proficiencyType": "used",
+      "isCore": false,
+      "contexts": [
+        "team_collaboration"
+      ]
+    },
+    {
+      "id": "android-studio",
+      "name": "Android Studio",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "used",
+      "isCore": true,
+      "contexts": [
+        "development",
+        "debugging",
+        "profiling"
+      ]
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": 8,
+      "isCore": true,
+      "contexts": [
+        "version_control",
+        "team_collaboration"
+      ]
+    },
+    {
+      "id": "gradle",
+      "name": "Gradle",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "build_system",
+        "modularization"
+      ]
+    },
+    {
+      "id": "ksp",
+      "name": "KSP",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "build_system",
+        "code_generation"
+      ]
+    },
+    {
+      "id": "kotlin-serialization",
+      "name": "Kotlin Serialization",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "serialization",
+        "networking",
+        "data_mapping"
+      ]
+    },
+    {
+      "id": "spotless",
+      "name": "Spotless",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "code_style",
+        "build_quality"
+      ]
+    },
+    {
+      "id": "hilt",
+      "name": "Hilt",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "dependency_injection",
+        "modern_android"
+      ]
+    },
+    {
+      "id": "dagger-2",
+      "name": "Dagger 2",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "dependency_injection",
+        "legacy_android"
+      ]
+    },
+    {
+      "id": "koin",
+      "name": "Koin",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "intermediate",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "dependency_injection"
+      ]
+    },
+    {
+      "id": "jira",
+      "name": "JIRA",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "used",
+      "isCore": false,
+      "contexts": [
+        "project_tracking",
+        "team_collaboration"
+      ]
+    },
+    {
+      "id": "firebase-crashlytics",
+      "name": "Firebase Crashlytics",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "observability",
+        "stability"
+      ]
+    },
+    {
+      "id": "ai-studio",
+      "name": "AI Studio",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "used",
+      "isCore": false,
+      "contexts": [
+        "agentic_development"
+      ]
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "used",
+      "isCore": false,
+      "contexts": [
+        "agentic_development"
+      ]
+    },
+    {
+      "id": "claude",
+      "name": "Claude",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "used",
+      "isCore": false,
+      "contexts": [
+        "agentic_development"
+      ]
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "used",
+      "isCore": false,
+      "contexts": [
+        "agentic_development"
+      ]
+    },
+    {
+      "id": "augment",
+      "name": "Augment",
+      "categoryId": "tools-platforms",
+      "proficiencyType": "used",
+      "isCore": false,
+      "contexts": [
+        "agentic_development"
+      ]
+    },
+    {
+      "id": "junit",
+      "name": "JUnit",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "unit_testing",
+        "test_automation"
+      ]
+    },
+    {
+      "id": "espresso",
+      "name": "Espresso",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "ui_testing"
+      ]
+    },
+    {
+      "id": "mockito",
+      "name": "Mockito",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "unit_testing",
+        "test_doubles"
+      ]
+    },
+    {
+      "id": "mockk",
+      "name": "MockK",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "unit_testing",
+        "kotlin_testing"
+      ]
+    },
+    {
+      "id": "robolectric",
+      "name": "Robolectric",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "intermediate",
+      "yearsOfExperience": null,
+      "isCore": false,
+      "contexts": [
+        "android_unit_testing"
+      ]
+    },
+    {
+      "id": "unit-testing",
+      "name": "Unit Testing",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "quality",
+        "test_automation"
+      ]
+    },
+    {
+      "id": "agentic-development",
+      "name": "Agentic Development",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "advanced",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "ai_workflows",
+        "developer_productivity"
+      ]
+    },
+    {
+      "id": "paparazzi",
+      "name": "Paparazzi",
+      "categoryId": "testing-quality-assurance",
+      "proficiencyType": "leveled",
+      "level": "intermediate",
+      "yearsOfExperience": null,
+      "isCore": true,
+      "contexts": [
+        "screenshot_testing",
+        "compose_testing"
+      ]
+    }
+  ]
+}

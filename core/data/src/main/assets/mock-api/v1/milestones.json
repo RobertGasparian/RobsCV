@@ -1,0 +1,57 @@
+{
+  "currentFocus": {
+    "summary": "Cross-platform Android development, AI-driven engineering workflows, and modern Compose architecture.",
+    "topics": [
+      "Kotlin Multiplatform",
+      "Compose Multiplatform",
+      "Agentic Development",
+      "Navigation 3"
+    ]
+  },
+  "recentMilestones": [
+    {
+      "id": "agentic-development-workflows",
+      "title": "Agentic Development Workflows",
+      "description": "Designed local and global AI agent rules, custom skills, and practical development workflows using tools such as Cursor, Claude, Codex, Augment, and AI Studio.",
+      "completedAt": "2026-04-30",
+      "topics": [
+        "Agentic Development",
+        "AI Tooling",
+        "Developer Productivity"
+      ]
+    },
+    {
+      "id": "compose-multiplatform-adoption",
+      "title": "Compose Multiplatform Adoption",
+      "description": "Applied Compose Multiplatform patterns while contributing to cross-platform UI architecture and shared development practices.",
+      "completedAt": "2026-03-31",
+      "topics": [
+        "Compose Multiplatform",
+        "Cross-platform UI",
+        "Kotlin"
+      ]
+    },
+    {
+      "id": "kotlin-multiplatform-adoption",
+      "title": "Kotlin Multiplatform Adoption",
+      "description": "Contributed to Kotlin Multiplatform adoption for shared business logic and improved development consistency across platforms.",
+      "completedAt": "2026-02-28",
+      "topics": [
+        "Kotlin Multiplatform",
+        "Shared Architecture",
+        "Cross-platform Development"
+      ]
+    },
+    {
+      "id": "material-3-expressive-exploration",
+      "title": "Material 3 Expressive Exploration",
+      "description": "Explored how Material 3 Expressive, adaptive layouts, and modern Compose APIs can support a polished native Android portfolio experience.",
+      "completedAt": "2026-01-31",
+      "topics": [
+        "Material 3",
+        "Jetpack Compose",
+        "Adaptive UI"
+      ]
+    }
+  ]
+}

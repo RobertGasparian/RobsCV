@@ -1,0 +1,39 @@
+{
+  "id": "robert-gasparyan",
+  "displayName": "Robert Gasparyan",
+  "headline": "Android Engineer",
+  "shortBio": "Senior Android Engineer with 8 years of experience building, modernizing, and optimizing Android applications across e-commerce, telecommunications, and multimedia.",
+  "location": {
+    "city": "Toronto",
+    "region": "ON",
+    "country": "Canada"
+  },
+  "contact": {
+    "email": "rob.gasparian@gmail.com",
+    "phone": "+1 437-551-9859",
+    "linkedin": "https://linkedin.com/in/rob-gasparian/"
+  },
+  "professionalProfile": "A highly accomplished Senior Android Engineer with 8 years of profound experience in architecting, developing, and optimizing mobile applications across diverse sectors including e-commerce, telecommunications, and multimedia. Expertly s Kotlin and Jetpack Compose to deliver scalable, high-performance solutions, consistently driving innovation through advanced architectural patterns, Kotlin Multiplatform, and pioneering Agentic AI development. Currently applying cutting-edge skills in cross-platform development and AI-driven engineering workflows.",
+  "summaryOfQualifications": [
+    {
+      "title": "Core Expertise",
+      "description": "Over 8 years of comprehensive experience in Android application development, specializing in Kotlin, Java, Jetpack Compose, and modern architectural patterns across multiple industry domains."
+    },
+    {
+      "title": "Technical Innovation",
+      "description": "Pioneered the adoption and implementation of Kotlin Multiplatform (KMP) and Compose Multiplatform (CMP) to streamline cross-platform development and enhance code reusability."
+    },
+    {
+      "title": "AI Development",
+      "description": "Championed Agentic Development methodologies, utilizing advanced AI tools (Cursor, Claude, AI Studio) to establish AI agent rules and custom skills, significantly boosting development efficiency and output."
+    },
+    {
+      "title": "System Architecture",
+      "description": "Architected and transformed outdated monolithic codebases into modular, scalable systems, improving maintainability and optimizing performance for applications serving millions of users."
+    },
+    {
+      "title": "Product Impact",
+      "description": "Directed the development and deployment of high-performance, user-centric mobile applications for major online retailers and creative platforms, impacting over a billion downloads globally."
+    }
+  ]
+}

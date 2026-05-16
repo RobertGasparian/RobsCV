@@ -1,0 +1,74 @@
+{
+  "institutions": [
+    {
+      "id": "basic-it-center",
+      "name": "Basic IT Center",
+      "shortName": null,
+      "type": "Training Center",
+      "description": "Specialized IT education center in Yerevan focused on programming and technology training.",
+      "websiteUrl": "https://www.basic.am",
+      "location": {
+        "city": "Yerevan",
+        "country": "Armenia",
+        "addressLine": "Isahakyan 18"
+      }
+    },
+    {
+      "id": "yerevan-state-university",
+      "name": "Yerevan State University",
+      "shortName": "YSU",
+      "type": "Public University",
+      "description": "Armenia's largest and leading university, offering undergraduate, master's, and postgraduate education.",
+      "websiteUrl": "https://www.ysu.am/en",
+      "location": {
+        "city": "Yerevan",
+        "country": "Armenia",
+        "addressLine": "1 Alex Manoogian"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "java-android-development-bootcamp-basic-it-center",
+      "institutionId": "basic-it-center",
+      "program": {
+        "name": "Java/Android Development Bootcamp",
+        "credential": "Bootcamp",
+        "fieldOfStudy": "Java/Android Development"
+      },
+      "startDate": "2017-01-09",
+      "endDate": "2017-07-31",
+      "status": "completed"
+    },
+    {
+      "id": "management-masters-yerevan-state-university",
+      "institutionId": "yerevan-state-university",
+      "faculty": {
+        "name": "Faculty of Economics and Management"
+      },
+      "program": {
+        "name": "Master's Degree in Management",
+        "credential": "Master's Degree",
+        "fieldOfStudy": "Management"
+      },
+      "startDate": "2014-09-01",
+      "endDate": "2016-06-30",
+      "status": "completed"
+    },
+    {
+      "id": "management-bachelors-yerevan-state-university",
+      "institutionId": "yerevan-state-university",
+      "faculty": {
+        "name": "Faculty of Economics and Management"
+      },
+      "program": {
+        "name": "Bachelor's Degree in Management",
+        "credential": "Bachelor's Degree",
+        "fieldOfStudy": "Management"
+      },
+      "startDate": "2010-09-01",
+      "endDate": "2014-06-30",
+      "status": "completed"
+    }
+  ]
+}

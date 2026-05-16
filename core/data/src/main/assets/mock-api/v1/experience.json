@@ -1,0 +1,80 @@
+{
+  "roles": [
+    {
+      "title": "Android Developer",
+      "company": "Priceline",
+      "startDate": "2025-11-01",
+      "endDate": null,
+      "location": "Toronto, ON, Canada",
+      "workArrangement": "hybrid",
+      "summary": "Contributed to Android application development for a major travel technology platform, supporting innovation through cross-platform solutions and advanced AI integration to optimize performance and developer workflows.",
+      "highlights": [
+        "Contributed to the adoption and implementation of Kotlin Multiplatform (KMP) and Compose Multiplatform (CMP) to unify codebase across Android and other platforms, significantly improving development velocity and consistency.",
+        "Architected and integrated Agentic Development workflows using tools such as Cursor, Claude, Codex, Augment, and AI Studio, establishing global and local AI agent rules to accelerate feature delivery and reduce manual effort.",
+        "Developed custom skills for AI agents, optimizing their performance in code generation, refactoring, and debugging, directly contributing to enhanced team productivity and code quality.",
+        "Transformed complex system requirements into robust, scalable Android features, leveraging advanced architectural patterns and Jetpack Compose for modern, performant user interfaces."
+      ]
+    },
+    {
+      "title": "Senior Android Developer",
+      "company": "DataArt",
+      "startDate": "2024-05-01",
+      "endDate": null,
+      "location": "Yerevan, Armenia",
+      "workArrangement": "on_site",
+      "summary": "Contributed to the development and enhancement of a critical Android application for a major online retailer, focusing on performance optimization, user interface design, and architectural improvements.",
+      "highlights": [
+        "Developed and deployed a sophisticated Android application for a major online retailer, achieving 5+ million downloads by optimizing performance, interface, and complete functionality.",
+        "Incorporated critical third-party APIs, libraries, and services to enhance platform capabilities, ensuring seamless operations and elevating user experience.",
+        "Accelerated the modularization level of the application from 42% to 53%, significantly improving code maintainability, scalability, and long-term development efficiency.",
+        "Owned DevOps responsibilities, setting up and maintaining CI/CD pipelines that accelerated release cycles and streamlined deployment processes.",
+        "Proactively researched and applied the latest Android development trends, ensuring the application remained modern, secure, and competitive through continuous innovation."
+      ]
+    },
+    {
+      "title": "Senior Android Developer",
+      "company": "NobelBiz, Inc.",
+      "startDate": "2021-09-01",
+      "endDate": "2024-04-30",
+      "location": "Yerevan, Armenia",
+      "workArrangement": "remote",
+      "summary": "Designed and developed the WowApp mobile application for the Android platform, adapting to evolving requirements and independently managing project deliverables to ensure high productivity.",
+      "highlights": [
+        "Architected and refactored an outdated monolithic codebase by introducing modern architecture patterns and modularizing 15 major feature modules, significantly improving maintainability and scalability.",
+        "Designed and developed the WowApp mobile application, achieving 5+ million downloads while consistently adapting to changing requirements without direct supervision.",
+        "Diagnosed and resolved critical bugs, optimizing application performance and enhancing overall stability for a broad user base.",
+        "Strategized and stayed current with emerging Android development trends, including Jetpack Compose, Kotlin Coroutines, and MVVM/MVI, to ensure innovative and future-proof solutions."
+      ]
+    },
+    {
+      "title": "Android Developer",
+      "company": "PicsArt",
+      "startDate": "2020-06-01",
+      "endDate": "2021-08-31",
+      "location": "Yerevan, Armenia",
+      "workArrangement": "on_site",
+      "summary": "Developed and implemented the primary Android application for PicsArt, focusing on usability, performance, and alignment with user requirements for a global user base.",
+      "highlights": [
+        "Developed and implemented the primary Android application (Picsart, 1B+ downloads), ensuring high usability, performance, and alignment with critical user requirements.",
+        "Collaborated effectively with designers and product managers to translate complex user needs into intuitive, functional mobile experiences.",
+        "Discovered and resolved critical application failures, decreasing the encoder/decoder failure rate by 12% through targeted interventions.",
+        "Introduced and integrated the most recent technologies to enhance product quality and extend application capabilities through external libraries and APIs."
+      ]
+    },
+    {
+      "title": "Junior Android Developer",
+      "company": "Cypress",
+      "startDate": "2017-08-01",
+      "endDate": "2019-07-31",
+      "location": "Yerevan, Armenia",
+      "workArrangement": "on_site",
+      "summary": "Developed and maintained complex Android applications, focusing on bug resolution, third-party integration, and adherence to quality coding standards.",
+      "highlights": [
+        "Developed and maintained complex Android applications, consistently identifying, diagnosing, and fixing bugs to ensure optimal functionality.",
+        "Integrated critical third-party services, libraries, and APIs into applications, ensuring seamless functionality within the application ecosystem.",
+        "Engaged proactively in code review sessions with peers and senior developers, continuously improving coding skills and maintaining high code quality standards.",
+        "Expanded cross-platform knowledge by learning the basics of Swift and contributing to two high-priority iOS projects in collaboration with senior developers."
+      ]
+    }
+  ]
+}
