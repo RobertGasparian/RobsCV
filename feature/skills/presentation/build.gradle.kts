@@ -1,10 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.gasparian.rob.feature.home"
+    namespace = "com.gasparian.rob.feature.skills.presentation"
     compileSdk {
         version =
             release(36) {
@@ -17,11 +16,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    buildFeatures {
-        compose = true
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     testOptions {
         unitTests.all {
@@ -31,18 +27,13 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:dsm"))
-    implementation(project(":core:model"))
+    implementation(project(":feature:skills:domain"))
 
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
     testImplementation(libs.turbine)
     testRuntimeOnly(libs.junit.platform.launcher)
 }

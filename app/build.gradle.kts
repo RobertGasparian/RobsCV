@@ -32,8 +32,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         compose = true
@@ -49,7 +49,21 @@ dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:dsm"))
     implementation(project(":core:model"))
-    implementation(project(":feature:home"))
+    implementation(project(":core:network"))
+    implementation(project(":feature:home:di"))
+    implementation(project(":feature:home:ui"))
+    implementation(project(":feature:contact:di"))
+    implementation(project(":feature:contact:ui"))
+    implementation(project(":feature:education:di"))
+    implementation(project(":feature:education:ui"))
+    implementation(project(":feature:experience:di"))
+    implementation(project(":feature:experience:ui"))
+    implementation(project(":feature:milestones:di"))
+    implementation(project(":feature:milestones:ui"))
+    implementation(project(":feature:profile:di"))
+    implementation(project(":feature:profile:ui"))
+    implementation(project(":feature:skills:di"))
+    implementation(project(":feature:skills:ui"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
@@ -66,6 +80,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.koin.android)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.ktor.client.android)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk)

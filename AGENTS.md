@@ -16,9 +16,15 @@ Prefer KMP-friendly libraries, APIs, and architecture choices so the project can
 
 For future networking, prefer Ktor Client over Retrofit because Ktor is Kotlin Multiplatform-friendly. Use Retrofit only if an Android-only integration becomes clearly simpler and the tradeoff is worth documenting.
 
+Keep the core networking module endpoint-agnostic. It should provide reusable HTTP client configuration, result/error handling, and typed request helpers, but feature/data modules should own their own endpoint constants, DTOs, request functions, and mapping logic.
+
+Structure feature code by Clean Architecture layers. Each substantial feature should be split into `domain`, `data`, `presentation`, and `ui` modules: domain owns business models and repository interfaces, data owns repository implementations plus data sources/DTOs/mappers, presentation owns state holders and UI state, and ui owns Compose screens/components. Dependency direction should point inward toward domain; domain must not depend on data, network, Android UI, or framework details.
+
 Use Navigation 3 as the default navigation approach. Keep navigation shared-friendly by modeling destinations as serializable route/state objects, avoiding Android `Context`, `Intent`, or framework objects in route definitions, and keeping navigation decisions in state/logic layers where practical rather than burying them inside UI components.
 
 Include meaningful unit tests and UI tests. Prefer Paparazzi for screenshot/UI testing where it gives fast, reliable feedback.
+
+Keep shared and future-KMP tests platform-friendly. Use MockK only for Android/JVM-specific tests where JVM mocking is appropriate. For shared/domain/common-style tests, prefer constructor-injected interfaces, hand-written fakes, lightweight test doubles, Ktor MockEngine for network behavior, and deterministic Flow/coroutine testing. Avoid designing production code around JVM-only mocking capabilities such as static mocking, final-class tricks, or runtime bytecode manipulation.
 
 Experimental Android and Jetpack APIs are welcome when they improve the app or demonstrate modern Android skill. Avoid only those libraries or APIs that have obvious bugs, severe instability, or would create more maintenance burden than value.
 
