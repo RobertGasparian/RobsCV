@@ -10,6 +10,8 @@ The app should help a recruiter, hiring manager, or Android engineer understand 
 ## Technical Direction
 Use Kotlin, Jetpack Compose, Material 3, Material 3 Expressive, single-activity architecture, MVI, Clean Architecture, ViewModels, UI state, and a clear data layer.
 
+Prefer Material 3 Expressive components, add-ons, and motion APIs when they are available and fit the screen's purpose. Use expressive navigation, transitions, interactive states, and animations to make the app feel modern and polished, while keeping the experience professional and avoiding effects that distract from the CV content.
+
 Use local static data first when it is enough. Use DataStore for small persistent data such as preferences or UI settings. Use Room when the app has larger structured data that benefits from querying, relations, or offline persistence.
 
 Prefer KMP-friendly libraries, APIs, and architecture choices so the project can move toward Kotlin Multiplatform later with minimal churn. Break this rule only when the KMP-friendly option creates real inconvenience, weak Android ergonomics, or a worse user/developer experience.
@@ -19,6 +21,10 @@ For future networking, prefer Ktor Client over Retrofit because Ktor is Kotlin M
 Keep the core networking module endpoint-agnostic. It should provide reusable HTTP client configuration, result/error handling, and typed request helpers, but feature/data modules should own their own endpoint constants, DTOs, request functions, and mapping logic.
 
 Structure feature code by Clean Architecture layers. Each substantial feature should be split into `domain`, `data`, `presentation`, and `ui` modules: domain owns business models and repository interfaces, data owns repository implementations plus data sources/DTOs/mappers, presentation owns state holders and UI state, and ui owns Compose screens/components. Dependency direction should point inward toward domain; domain must not depend on data, network, Android UI, or framework details.
+
+Use a consistent stateful/stateless Compose screen pattern. `*Screen` composables are the stateful route-level boundary: collect state from ViewModels, connect lifecycle-aware effects, handle one-off effects, and translate UI events into callbacks for navigation or presentation logic. Keep them in the feature UI module's `ui.screen` package. `*Component` composables are stateless renderers: they take UI state/data, render the combined screen UI, and hoist user events upward without owning ViewModels, navigation state, repositories, or side effects. Keep them in the feature UI module's `ui.component` package. Child composables should follow the same event-hoisting style.
+
+Create previews for stateless composables. For small reusable stateless composables that are not full-screen components, keep the preview in the same file. For full-screen stateless `*Component` composables, create a dedicated preview file and cover meaningful variations across mobile, foldable, and tablet layouts in both light and dark themes. Each UI state type should expose `initialState()` for the default runtime state and `preview()` for representative preview/demo data.
 
 Use Navigation 3 as the default navigation approach. Keep navigation shared-friendly by modeling destinations as serializable route/state objects, avoiding Android `Context`, `Intent`, or framework objects in route definitions, and keeping navigation decisions in state/logic layers where practical rather than burying them inside UI components.
 

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -27,9 +28,11 @@ android {
 
 dependencies {
     implementation(project(":core:dsm"))
+    implementation(project(":core:navigation"))
     implementation(project(":feature:experience:presentation"))
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.kotlinx.serialization.json)
 }

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -50,6 +51,7 @@ dependencies {
     implementation(project(":core:dsm"))
     implementation(project(":core:model"))
     implementation(project(":core:network"))
+    implementation(project(":core:navigation"))
     implementation(project(":feature:home:di"))
     implementation(project(":feature:home:ui"))
     implementation(project(":feature:contact:di"))
@@ -80,6 +82,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.koin.android)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.ktor.client.android)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)

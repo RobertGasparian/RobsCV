@@ -1,11 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.gasparian.rob.feature.skills.ui"
+    namespace = "com.gasparian.rob.core.navigation"
     compileSdk {
         version =
             release(36) {
@@ -21,18 +20,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-    implementation(project(":core:dsm"))
-    implementation(project(":core:navigation"))
-    implementation(project(":feature:skills:presentation"))
-
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.ui)
+    api(libs.androidx.compose.ui)
+    api(libs.androidx.navigation3.runtime)
     implementation(libs.kotlinx.serialization.json)
 }
