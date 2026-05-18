@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Room locates the generated database implementation reflectively in release builds.
+-keep class * extends androidx.room.RoomDatabase { <init>(); }

@@ -31,6 +31,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":feature:experience:domain"))
 
+    implementation(libs.androidx.room.runtime)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.serialization.json)
 

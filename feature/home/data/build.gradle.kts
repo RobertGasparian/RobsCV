@@ -28,11 +28,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:network"))
+    implementation(project(":feature:education:domain"))
+    implementation(project(":feature:experience:domain"))
     implementation(project(":feature:home:domain"))
+    implementation(project(":feature:milestones:domain"))
+    implementation(project(":feature:profile:domain"))
+    implementation(project(":feature:skills:domain"))
 
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.kotlinx.coroutines.test)

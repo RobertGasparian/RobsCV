@@ -15,5 +15,11 @@ java {
 }
 
 dependencies {
+    api(project(":feature:education:domain"))
+    api(project(":feature:experience:domain"))
+    api(project(":feature:milestones:domain"))
+    api(project(":feature:profile:domain"))
+    api(project(":feature:skills:domain"))
+
     implementation(libs.kotlinx.coroutines.core)
 }
