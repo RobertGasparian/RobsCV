@@ -27,5 +27,6 @@ dependencies {
     implementation(project(":feature:experience:domain"))
     implementation(project(":feature:experience:presentation"))
 
+    implementation(libs.koin.android)
     implementation(libs.koin.core)
 }

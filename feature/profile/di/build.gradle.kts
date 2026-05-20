@@ -27,5 +27,6 @@ dependencies {
     implementation(project(":feature:profile:domain"))
     implementation(project(":feature:profile:presentation"))
 
+    implementation(libs.koin.android)
     implementation(libs.koin.core)
 }

@@ -4,6 +4,8 @@ import com.gasparian.rob.feature.experience.data.remote.ExperienceRemoteDataSour
 import com.gasparian.rob.feature.experience.data.repository.NetworkBackedRcvExperienceRepository
 import com.gasparian.rob.feature.experience.domain.repository.ExperienceRepository
 import com.gasparian.rob.feature.experience.domain.usecase.GetExperienceUseCase
+import com.gasparian.rob.feature.experience.presentation.ExperienceViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val experienceModule =
@@ -22,6 +24,11 @@ val experienceModule =
         single {
             GetExperienceUseCase(
                 experienceRepository = get(),
+            )
+        }
+        viewModel {
+            ExperienceViewModel(
+                getExperienceUseCase = get(),
             )
         }
     }

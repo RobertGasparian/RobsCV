@@ -4,6 +4,8 @@ import com.gasparian.rob.feature.education.data.remote.EducationRemoteDataSource
 import com.gasparian.rob.feature.education.data.repository.NetworkBackedRcvEducationRepository
 import com.gasparian.rob.feature.education.domain.repository.EducationRepository
 import com.gasparian.rob.feature.education.domain.usecase.GetEducationUseCase
+import com.gasparian.rob.feature.education.presentation.EducationViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val educationModule =
@@ -22,6 +24,11 @@ val educationModule =
         single {
             GetEducationUseCase(
                 educationRepository = get(),
+            )
+        }
+        viewModel {
+            EducationViewModel(
+                getEducationUseCase = get(),
             )
         }
     }

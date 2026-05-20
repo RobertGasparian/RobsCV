@@ -27,5 +27,6 @@ dependencies {
     implementation(project(":feature:education:domain"))
     implementation(project(":feature:education:presentation"))
 
+    implementation(libs.koin.android)
     implementation(libs.koin.core)
 }

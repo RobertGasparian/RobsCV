@@ -29,7 +29,7 @@ android {
 dependencies {
     implementation(project(":feature:profile:domain"))
 
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(libs.junit.jupiter)

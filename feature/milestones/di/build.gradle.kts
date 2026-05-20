@@ -27,5 +27,6 @@ dependencies {
     implementation(project(":feature:milestones:domain"))
     implementation(project(":feature:milestones:presentation"))
 
+    implementation(libs.koin.android)
     implementation(libs.koin.core)
 }

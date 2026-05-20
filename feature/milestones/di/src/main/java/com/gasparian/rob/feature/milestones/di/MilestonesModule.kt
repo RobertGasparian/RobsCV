@@ -4,6 +4,8 @@ import com.gasparian.rob.feature.milestones.data.remote.MilestonesRemoteDataSour
 import com.gasparian.rob.feature.milestones.data.repository.NetworkBackedRcvMilestonesRepository
 import com.gasparian.rob.feature.milestones.domain.repository.MilestonesRepository
 import com.gasparian.rob.feature.milestones.domain.usecase.GetMilestonesUseCase
+import com.gasparian.rob.feature.milestones.presentation.MilestonesViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val milestonesModule =
@@ -22,6 +24,11 @@ val milestonesModule =
         single {
             GetMilestonesUseCase(
                 milestonesRepository = get(),
+            )
+        }
+        viewModel {
+            MilestonesViewModel(
+                getMilestonesUseCase = get(),
             )
         }
     }

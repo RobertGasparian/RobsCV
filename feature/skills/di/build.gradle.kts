@@ -27,5 +27,6 @@ dependencies {
     implementation(project(":feature:skills:domain"))
     implementation(project(":feature:skills:presentation"))
 
+    implementation(libs.koin.android)
     implementation(libs.koin.core)
 }

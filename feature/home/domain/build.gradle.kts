@@ -14,6 +14,10 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 dependencies {
     api(project(":feature:education:domain"))
     api(project(":feature:experience:domain"))
@@ -22,4 +26,8 @@ dependencies {
     api(project(":feature:skills:domain"))
 
     implementation(libs.kotlinx.coroutines.core)
+
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }

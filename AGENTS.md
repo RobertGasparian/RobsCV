@@ -43,6 +43,13 @@ state holders and UI state, and ui owns Compose screens/components. Dependency d
 point inward toward domain; domain must not depend on data, network, Android UI, or framework
 details.
 
+Keep presentation modules Compose-free. Presentation may expose plain Kotlin UI state, UI events,
+effects, display models, and ViewModels, but it should not depend on Compose runtime, Compose UI
+types, Material components, Android resources, `Color`, `Painter`, `AnnotatedString`, or
+`@Composable` APIs. Convert presentation state into Compose visuals inside the UI module. This keeps
+presentation testable, easier to move toward KMP, and usable by Android Compose now and Compose
+Multiplatform later without binding business-facing state to a rendering toolkit.
+
 Use a consistent stateful/stateless Compose screen pattern. `*Screen` composables are the stateful
 route-level boundary: collect state from ViewModels, connect lifecycle-aware effects, handle one-off
 effects, and translate UI events into callbacks for navigation or presentation logic. Keep them in
