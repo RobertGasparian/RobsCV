@@ -1,25 +1,25 @@
 package com.gasparian.rob.feature.profile.data.mapper
 
 import com.gasparian.rob.core.network.RcvNetworkError
-import com.gasparian.rob.feature.profile.data.local.RcvProfileContactEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileEntityGraph
-import com.gasparian.rob.feature.profile.data.local.RcvProfileLocationEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileQualificationEntity
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileResponseDto
-import com.gasparian.rob.feature.profile.domain.model.RcvProfile
-import com.gasparian.rob.feature.profile.domain.model.RcvProfileContact
-import com.gasparian.rob.feature.profile.domain.model.RcvProfileLocation
-import com.gasparian.rob.feature.profile.domain.model.RcvProfileQualification
+import com.gasparian.rob.feature.profile.data.local.ProfileContactEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileEntityGraph
+import com.gasparian.rob.feature.profile.data.local.ProfileLocationEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileQualificationEntity
+import com.gasparian.rob.feature.profile.data.remote.ProfileResponseDto
+import com.gasparian.rob.feature.profile.domain.model.Profile
+import com.gasparian.rob.feature.profile.domain.model.ProfileContact
+import com.gasparian.rob.feature.profile.domain.model.ProfileLocation
+import com.gasparian.rob.feature.profile.domain.model.ProfileQualification
 
-internal fun RcvProfileResponseDto.toEntityGraph(
+internal fun ProfileResponseDto.toEntityGraph(
     updatedAtMillis: Long,
-): RcvProfileEntityGraph {
+): ProfileEntityGraph {
     val locationId = "profile:$id"
     val contactId = "profile:$id"
-    return RcvProfileEntityGraph(
+    return ProfileEntityGraph(
         profile =
-        RcvProfileEntity(
+        ProfileEntity(
             id = id,
             displayName = displayName,
             headline = headline,
@@ -30,7 +30,7 @@ internal fun RcvProfileResponseDto.toEntityGraph(
             updatedAtMillis = updatedAtMillis,
         ),
         location =
-        RcvProfileLocationEntity(
+        ProfileLocationEntity(
             id = locationId,
             city = location.city,
             region = location.region,
@@ -38,7 +38,7 @@ internal fun RcvProfileResponseDto.toEntityGraph(
             addressLine = location.addressLine,
         ),
         contact =
-        RcvProfileContactEntity(
+        ProfileContactEntity(
             id = contactId,
             email = contact.email,
             phone = contact.phone,
@@ -46,7 +46,7 @@ internal fun RcvProfileResponseDto.toEntityGraph(
         ),
         qualifications =
         summaryOfQualifications.mapIndexed { index, qualification ->
-            RcvProfileQualificationEntity(
+            ProfileQualificationEntity(
                 id = "$id:qualification:$index",
                 profileId = id,
                 title = qualification.title,
@@ -57,20 +57,20 @@ internal fun RcvProfileResponseDto.toEntityGraph(
     )
 }
 
-internal fun RcvProfileEntityGraph.toDomain(): RcvProfile = RcvProfile(
+internal fun ProfileEntityGraph.toDomain(): Profile = Profile(
     id = profile.id,
     displayName = profile.displayName,
     headline = profile.headline,
     shortBio = profile.shortBio,
     location =
-    RcvProfileLocation(
+    ProfileLocation(
         city = location.city,
         region = location.region,
         country = location.country,
         addressLine = location.addressLine,
     ),
     contact =
-    RcvProfileContact(
+    ProfileContact(
         email = contact.email,
         phone = contact.phone,
         linkedin = contact.linkedin,
@@ -78,7 +78,7 @@ internal fun RcvProfileEntityGraph.toDomain(): RcvProfile = RcvProfile(
     professionalProfile = profile.professionalProfile,
     summaryOfQualifications =
     qualifications.map { qualification ->
-        RcvProfileQualification(
+        ProfileQualification(
             title = qualification.title,
             description = qualification.description,
         )

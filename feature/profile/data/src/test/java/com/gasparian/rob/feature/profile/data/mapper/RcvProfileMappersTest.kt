@@ -1,9 +1,9 @@
 package com.gasparian.rob.feature.profile.data.mapper
 
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileContactDto
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileLocationDto
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileQualificationDto
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileResponseDto
+import com.gasparian.rob.feature.profile.data.remote.ProfileContactDto
+import com.gasparian.rob.feature.profile.data.remote.ProfileLocationDto
+import com.gasparian.rob.feature.profile.data.remote.ProfileQualificationDto
+import com.gasparian.rob.feature.profile.data.remote.ProfileResponseDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -33,20 +33,20 @@ class RcvProfileMappersTest {
     }
 }
 
-private val profileDto = RcvProfileResponseDto(
+private val profileDto = ProfileResponseDto(
     id = "rob",
     displayName = "Robert Gasparyan",
     headline = "Android Engineer",
     shortBio = "Senior Android engineer.",
-    location = RcvProfileLocationDto(city = "Toronto", region = "ON", country = "Canada"),
-    contact = RcvProfileContactDto(
+    location = ProfileLocationDto(city = "Toronto", region = "ON", country = "Canada"),
+    contact = ProfileContactDto(
         email = "rob.gasparian@gmail.com",
         phone = "+1 437-551-9859",
         linkedin = "linkedin.com/in/rob-gasparian/",
     ),
     professionalProfile = "Professional profile",
     summaryOfQualifications = listOf(
-        RcvProfileQualificationDto(
+        ProfileQualificationDto(
             title = "Core Expertise",
             description = "Android development.",
         ),

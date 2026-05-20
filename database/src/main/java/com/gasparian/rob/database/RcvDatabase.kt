@@ -4,63 +4,63 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabase.Builder
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.gasparian.rob.feature.education.data.local.RcvEducationDao
-import com.gasparian.rob.feature.education.data.local.RcvEducationItemEntity
-import com.gasparian.rob.feature.education.data.local.RcvEducationLocationEntity
-import com.gasparian.rob.feature.education.data.local.RcvInstitutionEntity
-import com.gasparian.rob.feature.experience.data.local.RcvExperienceDao
-import com.gasparian.rob.feature.experience.data.local.RcvExperienceHighlightEntity
-import com.gasparian.rob.feature.experience.data.local.RcvExperienceRoleEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvCurrentFocusEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvCurrentFocusTopicEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvMilestoneEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvMilestoneTopicEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvMilestonesDao
-import com.gasparian.rob.feature.profile.data.local.RcvProfileContactEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileDao
-import com.gasparian.rob.feature.profile.data.local.RcvProfileEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileLocationEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileQualificationEntity
-import com.gasparian.rob.feature.skills.data.local.RcvSkillCategoryEntity
-import com.gasparian.rob.feature.skills.data.local.RcvSkillContextEntity
-import com.gasparian.rob.feature.skills.data.local.RcvSkillEntity
-import com.gasparian.rob.feature.skills.data.local.RcvSkillsDao
+import com.gasparian.rob.feature.education.data.local.EducationDao
+import com.gasparian.rob.feature.education.data.local.EducationItemEntity
+import com.gasparian.rob.feature.education.data.local.EducationLocationEntity
+import com.gasparian.rob.feature.education.data.local.InstitutionEntity
+import com.gasparian.rob.feature.experience.data.local.ExperienceDao
+import com.gasparian.rob.feature.experience.data.local.ExperienceHighlightEntity
+import com.gasparian.rob.feature.experience.data.local.ExperienceRoleEntity
+import com.gasparian.rob.feature.milestones.data.local.CurrentFocusEntity
+import com.gasparian.rob.feature.milestones.data.local.CurrentFocusTopicEntity
+import com.gasparian.rob.feature.milestones.data.local.MilestoneEntity
+import com.gasparian.rob.feature.milestones.data.local.MilestoneTopicEntity
+import com.gasparian.rob.feature.milestones.data.local.MilestonesDao
+import com.gasparian.rob.feature.profile.data.local.ProfileContactEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileDao
+import com.gasparian.rob.feature.profile.data.local.ProfileEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileLocationEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileQualificationEntity
+import com.gasparian.rob.feature.skills.data.local.SkillCategoryEntity
+import com.gasparian.rob.feature.skills.data.local.SkillContextEntity
+import com.gasparian.rob.feature.skills.data.local.SkillEntity
+import com.gasparian.rob.feature.skills.data.local.SkillsDao
 import kotlinx.coroutines.Dispatchers
 
 const val RCV_DATABASE_NAME = "robscv.db"
 
 @Database(
     entities = [
-        RcvProfileEntity::class,
-        RcvProfileLocationEntity::class,
-        RcvProfileContactEntity::class,
-        RcvProfileQualificationEntity::class,
-        RcvSkillCategoryEntity::class,
-        RcvSkillEntity::class,
-        RcvSkillContextEntity::class,
-        RcvExperienceRoleEntity::class,
-        RcvExperienceHighlightEntity::class,
-        RcvInstitutionEntity::class,
-        RcvEducationLocationEntity::class,
-        RcvEducationItemEntity::class,
-        RcvCurrentFocusEntity::class,
-        RcvCurrentFocusTopicEntity::class,
-        RcvMilestoneEntity::class,
-        RcvMilestoneTopicEntity::class,
+        ProfileEntity::class,
+        ProfileLocationEntity::class,
+        ProfileContactEntity::class,
+        ProfileQualificationEntity::class,
+        SkillCategoryEntity::class,
+        SkillEntity::class,
+        SkillContextEntity::class,
+        ExperienceRoleEntity::class,
+        ExperienceHighlightEntity::class,
+        InstitutionEntity::class,
+        EducationLocationEntity::class,
+        EducationItemEntity::class,
+        CurrentFocusEntity::class,
+        CurrentFocusTopicEntity::class,
+        MilestoneEntity::class,
+        MilestoneTopicEntity::class,
     ],
     version = 1,
     exportSchema = true,
 )
 abstract class RcvDatabase : RoomDatabase() {
-    abstract fun profileDao(): RcvProfileDao
+    abstract fun profileDao(): ProfileDao
 
-    abstract fun skillsDao(): RcvSkillsDao
+    abstract fun skillsDao(): SkillsDao
 
-    abstract fun experienceDao(): RcvExperienceDao
+    abstract fun experienceDao(): ExperienceDao
 
-    abstract fun educationDao(): RcvEducationDao
+    abstract fun educationDao(): EducationDao
 
-    abstract fun milestonesDao(): RcvMilestonesDao
+    abstract fun milestonesDao(): MilestonesDao
 }
 
 fun buildRcvDatabase(

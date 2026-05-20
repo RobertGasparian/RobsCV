@@ -1,21 +1,21 @@
 package com.gasparian.rob.feature.skills.data.repository
 
 import com.gasparian.rob.core.network.RcvNetworkResult
-import com.gasparian.rob.feature.skills.data.local.RcvSkillsDao
+import com.gasparian.rob.feature.skills.data.local.SkillsDao
 import com.gasparian.rob.feature.skills.data.mapper.toDomain
 import com.gasparian.rob.feature.skills.data.mapper.toEntityGraph
-import com.gasparian.rob.feature.skills.data.remote.RcvSkillsRemoteDataSource
-import com.gasparian.rob.feature.skills.domain.model.RcvSkills
-import com.gasparian.rob.feature.skills.domain.repository.RcvSkillsRepository
+import com.gasparian.rob.feature.skills.data.remote.SkillsRemoteDataSource
+import com.gasparian.rob.feature.skills.domain.model.Skills
+import com.gasparian.rob.feature.skills.domain.repository.SkillsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvSkillsRepository(
-    private val remoteDataSource: RcvSkillsRemoteDataSource,
-    private val skillsDao: RcvSkillsDao,
-) : RcvSkillsRepository {
-    override val skills: Flow<Result<RcvSkills>> = skillsDao
+    private val remoteDataSource: SkillsRemoteDataSource,
+    private val skillsDao: SkillsDao,
+) : SkillsRepository {
+    override val skills: Flow<Result<Skills>> = skillsDao
         .skillsGraphFlow()
         .map { graph ->
             graph

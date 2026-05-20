@@ -1,22 +1,22 @@
 package com.gasparian.rob.feature.profile.data.repository
 
 import com.gasparian.rob.core.network.RcvNetworkResult
-import com.gasparian.rob.feature.profile.data.local.RcvProfileDao
+import com.gasparian.rob.feature.profile.data.local.ProfileDao
 import com.gasparian.rob.feature.profile.data.mapper.toDomain
 import com.gasparian.rob.feature.profile.data.mapper.toEntityGraph
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileRemoteDataSource
-import com.gasparian.rob.feature.profile.domain.model.RcvProfile
-import com.gasparian.rob.feature.profile.domain.repository.RcvProfileRepository
+import com.gasparian.rob.feature.profile.data.remote.ProfileRemoteDataSource
+import com.gasparian.rob.feature.profile.domain.model.Profile
+import com.gasparian.rob.feature.profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvProfileRepository(
-    private val remoteDataSource: RcvProfileRemoteDataSource,
-    private val profileDao: RcvProfileDao,
+    private val remoteDataSource: ProfileRemoteDataSource,
+    private val profileDao: ProfileDao,
     private val currentTimeMillis: () -> Long = { System.currentTimeMillis() },
-) : RcvProfileRepository {
-    override val profile: Flow<Result<RcvProfile>> = profileDao
+) : ProfileRepository {
+    override val profile: Flow<Result<Profile>> = profileDao
         .profileGraphFlow()
         .map { graph ->
             graph

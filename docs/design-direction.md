@@ -9,8 +9,9 @@ Android work.
 The app should feel like a focused product, not a resume PDF wrapper, marketing site, dashboard, or
 component showcase.
 
-Official product and design-system names should remain `RobsCV` and `RobsCV DSM`. Code symbols use
-the shorter `Rcv` prefix.
+Official product and design-system names should remain `RobsCV` and `RobsCV DSM`. Code symbols
+should avoid a blanket `Rcv` prefix and use it only where it prevents ambiguity with platform,
+library, or similarly named project types.
 
 ## Personality
 

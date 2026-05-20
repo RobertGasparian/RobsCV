@@ -1,7 +1,9 @@
 package com.gasparian.rob.feature.experience.data.mapper
 
-import com.gasparian.rob.feature.experience.data.remote.RcvExperienceResponseDto
-import com.gasparian.rob.feature.experience.data.remote.RcvExperienceRoleDto
+import com.gasparian.rob.feature.experience.data.remote.ExperienceResponseDto
+import com.gasparian.rob.feature.experience.data.remote.ExperienceRoleDto
+import com.gasparian.rob.feature.experience.domain.model.WorkArrangement
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -20,13 +22,15 @@ class RcvExperienceMappersTest {
         val domain = experienceDto.toEntityGraph().toDomain()
 
         assertEquals("Priceline", domain.roles.single().company)
+        assertEquals(LocalDate.parse("2025-11-01"), domain.roles.single().startDate)
+        assertEquals(WorkArrangement.Hybrid, domain.roles.single().workArrangement)
         assertEquals(listOf("Built KMP foundation", "Introduced AI workflows"), domain.roles.single().highlights)
     }
 }
 
-private val experienceDto = RcvExperienceResponseDto(
+private val experienceDto = ExperienceResponseDto(
     roles = listOf(
-        RcvExperienceRoleDto(
+        ExperienceRoleDto(
             title = "Android Engineer",
             company = "Priceline",
             startDate = "2025-11-01",

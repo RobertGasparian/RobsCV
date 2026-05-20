@@ -1,21 +1,21 @@
 package com.gasparian.rob.feature.experience.data.repository
 
 import com.gasparian.rob.core.network.RcvNetworkResult
-import com.gasparian.rob.feature.experience.data.local.RcvExperienceDao
+import com.gasparian.rob.feature.experience.data.local.ExperienceDao
 import com.gasparian.rob.feature.experience.data.mapper.toDomain
 import com.gasparian.rob.feature.experience.data.mapper.toEntityGraph
-import com.gasparian.rob.feature.experience.data.remote.RcvExperienceRemoteDataSource
-import com.gasparian.rob.feature.experience.domain.model.RcvExperience
-import com.gasparian.rob.feature.experience.domain.repository.RcvExperienceRepository
+import com.gasparian.rob.feature.experience.data.remote.ExperienceRemoteDataSource
+import com.gasparian.rob.feature.experience.domain.model.Experience
+import com.gasparian.rob.feature.experience.domain.repository.ExperienceRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvExperienceRepository(
-    private val remoteDataSource: RcvExperienceRemoteDataSource,
-    private val experienceDao: RcvExperienceDao,
-) : RcvExperienceRepository {
-    override val experience: Flow<Result<RcvExperience>> = experienceDao
+    private val remoteDataSource: ExperienceRemoteDataSource,
+    private val experienceDao: ExperienceDao,
+) : ExperienceRepository {
+    override val experience: Flow<Result<Experience>> = experienceDao
         .experienceGraphFlow()
         .map { graph ->
             graph

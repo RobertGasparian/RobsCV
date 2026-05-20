@@ -1,35 +1,36 @@
 package com.gasparian.rob.feature.milestones.data.mapper
 
 import com.gasparian.rob.core.network.RcvNetworkError
-import com.gasparian.rob.feature.milestones.data.local.RcvCurrentFocusEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvCurrentFocusTopicEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvMilestoneEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvMilestoneTopicEntity
-import com.gasparian.rob.feature.milestones.data.local.RcvMilestonesEntityGraph
-import com.gasparian.rob.feature.milestones.data.remote.RcvMilestonesResponseDto
-import com.gasparian.rob.feature.milestones.domain.model.RcvCurrentFocus
-import com.gasparian.rob.feature.milestones.domain.model.RcvMilestone
-import com.gasparian.rob.feature.milestones.domain.model.RcvMilestones
+import com.gasparian.rob.feature.milestones.data.local.CurrentFocusEntity
+import com.gasparian.rob.feature.milestones.data.local.CurrentFocusTopicEntity
+import com.gasparian.rob.feature.milestones.data.local.MilestoneEntity
+import com.gasparian.rob.feature.milestones.data.local.MilestoneTopicEntity
+import com.gasparian.rob.feature.milestones.data.local.MilestonesEntityGraph
+import com.gasparian.rob.feature.milestones.data.remote.MilestonesResponseDto
+import com.gasparian.rob.feature.milestones.domain.model.CurrentFocus
+import com.gasparian.rob.feature.milestones.domain.model.Milestone
+import com.gasparian.rob.feature.milestones.domain.model.Milestones
+import kotlinx.datetime.LocalDate
 
-internal fun RcvMilestonesResponseDto.toEntityGraph(
+internal fun MilestonesResponseDto.toEntityGraph(
     updatedAtMillis: Long,
-): RcvMilestonesEntityGraph = RcvMilestonesEntityGraph(
+): MilestonesEntityGraph = MilestonesEntityGraph(
     currentFocus =
-    RcvCurrentFocusEntity(
+    CurrentFocusEntity(
         summary = currentFocus.summary,
         updatedAtMillis = updatedAtMillis,
     ),
     currentFocusTopics =
     currentFocus.topics.mapIndexed { index, topic ->
-        RcvCurrentFocusTopicEntity(
-            focusId = RcvCurrentFocusEntity.DEFAULT_ID,
+        CurrentFocusTopicEntity(
+            focusId = CurrentFocusEntity.DEFAULT_ID,
             topic = topic,
             sortIndex = index,
         )
     },
     milestones =
     recentMilestones.map { milestone ->
-        RcvMilestoneEntity(
+        MilestoneEntity(
             id = milestone.id,
             title = milestone.title,
             description = milestone.description,
@@ -39,7 +40,7 @@ internal fun RcvMilestonesResponseDto.toEntityGraph(
     milestoneTopics =
     recentMilestones.flatMap { milestone ->
         milestone.topics.mapIndexed { index, topic ->
-            RcvMilestoneTopicEntity(
+            MilestoneTopicEntity(
                 milestoneId = milestone.id,
                 topic = topic,
                 sortIndex = index,
@@ -48,27 +49,27 @@ internal fun RcvMilestonesResponseDto.toEntityGraph(
     },
 )
 
-internal fun RcvMilestonesEntityGraph.toDomain(): RcvMilestones = RcvMilestones(
+internal fun MilestonesEntityGraph.toDomain(): Milestones = Milestones(
     currentFocus =
-    RcvCurrentFocus(
+    CurrentFocus(
         summary = currentFocus.summary,
         topics =
         currentFocusTopics
-            .sortedBy(RcvCurrentFocusTopicEntity::sortIndex)
-            .map(RcvCurrentFocusTopicEntity::topic),
+            .sortedBy(CurrentFocusTopicEntity::sortIndex)
+            .map(CurrentFocusTopicEntity::topic),
     ),
     recentMilestones =
     milestones.map { milestone ->
-        RcvMilestone(
+        Milestone(
             id = milestone.id,
             title = milestone.title,
             description = milestone.description,
-            completedAt = milestone.completedAt,
+            completedAt = LocalDate.parse(milestone.completedAt),
             topics =
             milestoneTopics
                 .filter { topic -> topic.milestoneId == milestone.id }
-                .sortedBy(RcvMilestoneTopicEntity::sortIndex)
-                .map(RcvMilestoneTopicEntity::topic),
+                .sortedBy(MilestoneTopicEntity::sortIndex)
+                .map(MilestoneTopicEntity::topic),
         )
     },
 )

@@ -3,17 +3,17 @@ package com.gasparian.rob.feature.profile.data.repository
 import app.cash.turbine.test
 import com.gasparian.rob.core.network.RcvNetworkError
 import com.gasparian.rob.core.network.RcvNetworkResult
-import com.gasparian.rob.feature.profile.data.local.RcvProfileContactEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileDao
-import com.gasparian.rob.feature.profile.data.local.RcvProfileEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileEntityGraph
-import com.gasparian.rob.feature.profile.data.local.RcvProfileLocationEntity
-import com.gasparian.rob.feature.profile.data.local.RcvProfileQualificationEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileContactEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileDao
+import com.gasparian.rob.feature.profile.data.local.ProfileEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileEntityGraph
+import com.gasparian.rob.feature.profile.data.local.ProfileLocationEntity
+import com.gasparian.rob.feature.profile.data.local.ProfileQualificationEntity
 import com.gasparian.rob.feature.profile.data.mapper.toEntityGraph
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileContactDto
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileLocationDto
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileRemoteDataSource
-import com.gasparian.rob.feature.profile.data.remote.RcvProfileResponseDto
+import com.gasparian.rob.feature.profile.data.remote.ProfileContactDto
+import com.gasparian.rob.feature.profile.data.remote.ProfileLocationDto
+import com.gasparian.rob.feature.profile.data.remote.ProfileRemoteDataSource
+import com.gasparian.rob.feature.profile.data.remote.ProfileResponseDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +26,7 @@ class NetworkBackedRcvProfileRepositoryTest {
     @Test
     fun `profile syncs remote data into dao before emitting`() = runTest {
         val dao = FakeRcvProfileDao()
-        val remoteDataSource = mockk<RcvProfileRemoteDataSource>()
+        val remoteDataSource = mockk<ProfileRemoteDataSource>()
         coEvery { remoteDataSource.getProfile() } returns RcvNetworkResult.Success(profileResponse)
         val repository = NetworkBackedRcvProfileRepository(
             remoteDataSource = remoteDataSource,
@@ -46,7 +46,7 @@ class NetworkBackedRcvProfileRepositoryTest {
     @Test
     fun `profile emits cached data when remote sync fails`() = runTest {
         val dao = FakeRcvProfileDao(initialGraph = profileResponse.toEntityGraph(updatedAtMillis = 111L))
-        val remoteDataSource = mockk<RcvProfileRemoteDataSource>()
+        val remoteDataSource = mockk<ProfileRemoteDataSource>()
         coEvery { remoteDataSource.getProfile() } returns RcvNetworkResult.Failure(RcvNetworkError.Timeout)
         val repository = NetworkBackedRcvProfileRepository(remoteDataSource = remoteDataSource, profileDao = dao)
 
@@ -62,7 +62,7 @@ class NetworkBackedRcvProfileRepositoryTest {
     @Test
     fun `profile emits failure when remote sync fails and cache is empty`() = runTest {
         val dao = FakeRcvProfileDao()
-        val remoteDataSource = mockk<RcvProfileRemoteDataSource>()
+        val remoteDataSource = mockk<ProfileRemoteDataSource>()
         coEvery { remoteDataSource.getProfile() } returns RcvNetworkResult.Failure(RcvNetworkError.Timeout)
         val repository = NetworkBackedRcvProfileRepository(remoteDataSource = remoteDataSource, profileDao = dao)
 
@@ -76,44 +76,44 @@ class NetworkBackedRcvProfileRepositoryTest {
 }
 
 private class FakeRcvProfileDao(
-    initialGraph: RcvProfileEntityGraph? = null,
-) : RcvProfileDao {
+    initialGraph: ProfileEntityGraph? = null,
+) : ProfileDao {
     private val graphFlow = MutableStateFlow(initialGraph)
-    var lastReplacedGraph: RcvProfileEntityGraph? = null
+    var lastReplacedGraph: ProfileEntityGraph? = null
 
-    override fun profileGraphFlow(): Flow<RcvProfileEntityGraph?> = graphFlow
+    override fun profileGraphFlow(): Flow<ProfileEntityGraph?> = graphFlow
 
-    override suspend fun replaceProfile(graph: RcvProfileEntityGraph) {
+    override suspend fun replaceProfile(graph: ProfileEntityGraph) {
         lastReplacedGraph = graph
         graphFlow.value = graph
     }
 
-    override suspend fun getProfileGraph(): RcvProfileEntityGraph? = graphFlow.value
-    override suspend fun getProfile(): RcvProfileEntity? = error("Unused")
-    override fun profileFlow(): Flow<RcvProfileEntity?> = error("Unused")
-    override fun locationsFlow(): Flow<List<RcvProfileLocationEntity>> = error("Unused")
-    override fun contactsFlow(): Flow<List<RcvProfileContactEntity>> = error("Unused")
-    override fun qualificationsFlow(): Flow<List<RcvProfileQualificationEntity>> = error("Unused")
-    override suspend fun getLocation(id: String): RcvProfileLocationEntity? = error("Unused")
-    override suspend fun getContact(id: String): RcvProfileContactEntity? = error("Unused")
-    override suspend fun getQualifications(profileId: String): List<RcvProfileQualificationEntity> = error("Unused")
-    override suspend fun upsertProfile(profile: RcvProfileEntity) = error("Unused")
-    override suspend fun upsertLocation(location: RcvProfileLocationEntity) = error("Unused")
-    override suspend fun upsertContact(contact: RcvProfileContactEntity) = error("Unused")
-    override suspend fun upsertQualifications(qualifications: List<RcvProfileQualificationEntity>) = error("Unused")
+    override suspend fun getProfileGraph(): ProfileEntityGraph? = graphFlow.value
+    override suspend fun getProfile(): ProfileEntity? = error("Unused")
+    override fun profileFlow(): Flow<ProfileEntity?> = error("Unused")
+    override fun locationsFlow(): Flow<List<ProfileLocationEntity>> = error("Unused")
+    override fun contactsFlow(): Flow<List<ProfileContactEntity>> = error("Unused")
+    override fun qualificationsFlow(): Flow<List<ProfileQualificationEntity>> = error("Unused")
+    override suspend fun getLocation(id: String): ProfileLocationEntity? = error("Unused")
+    override suspend fun getContact(id: String): ProfileContactEntity? = error("Unused")
+    override suspend fun getQualifications(profileId: String): List<ProfileQualificationEntity> = error("Unused")
+    override suspend fun upsertProfile(profile: ProfileEntity) = error("Unused")
+    override suspend fun upsertLocation(location: ProfileLocationEntity) = error("Unused")
+    override suspend fun upsertContact(contact: ProfileContactEntity) = error("Unused")
+    override suspend fun upsertQualifications(qualifications: List<ProfileQualificationEntity>) = error("Unused")
     override suspend fun clearProfile() = error("Unused")
     override suspend fun clearLocations() = error("Unused")
     override suspend fun clearContacts() = error("Unused")
     override suspend fun clearQualifications() = error("Unused")
 }
 
-private val profileResponse = RcvProfileResponseDto(
+private val profileResponse = ProfileResponseDto(
     id = "rob",
     displayName = "Robert Gasparyan",
     headline = "Android Engineer",
     shortBio = "Senior Android engineer.",
-    location = RcvProfileLocationDto(city = "Toronto", region = "ON", country = "Canada"),
-    contact = RcvProfileContactDto(
+    location = ProfileLocationDto(city = "Toronto", region = "ON", country = "Canada"),
+    contact = ProfileContactDto(
         email = "rob.gasparian@gmail.com",
         phone = "+1 437-551-9859",
         linkedin = "linkedin.com/in/rob-gasparian/",

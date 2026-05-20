@@ -1,8 +1,10 @@
 package com.gasparian.rob.feature.skills.data.mapper
 
-import com.gasparian.rob.feature.skills.data.remote.RcvSkillCategoryDto
-import com.gasparian.rob.feature.skills.data.remote.RcvSkillDto
-import com.gasparian.rob.feature.skills.data.remote.RcvSkillsResponseDto
+import com.gasparian.rob.feature.skills.data.remote.SkillCategoryDto
+import com.gasparian.rob.feature.skills.data.remote.SkillDto
+import com.gasparian.rob.feature.skills.data.remote.SkillsResponseDto
+import com.gasparian.rob.feature.skills.domain.model.SkillLevel
+import com.gasparian.rob.feature.skills.domain.model.SkillProficiencyType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -23,18 +25,20 @@ class RcvSkillsMappersTest {
 
         assertEquals("Android", domain.categories.single().name)
         assertEquals("Kotlin", domain.skills.single().name)
+        assertEquals(SkillProficiencyType.LEVELED, domain.skills.single().proficiencyType)
+        assertEquals(SkillLevel.EXPERT, domain.skills.single().level)
         assertEquals(listOf("Production apps", "KMP migration"), domain.skills.single().contexts)
     }
 }
 
-private val skillsDto = RcvSkillsResponseDto(
-    categories = listOf(RcvSkillCategoryDto(id = "android", name = "Android")),
+private val skillsDto = SkillsResponseDto(
+    categories = listOf(SkillCategoryDto(id = "android", name = "Android")),
     skills = listOf(
-        RcvSkillDto(
+        SkillDto(
             id = "kotlin",
             name = "Kotlin",
             categoryId = "android",
-            proficiencyType = "graded",
+            proficiencyType = "leveled",
             level = "expert",
             yearsOfExperience = 8,
             isCore = true,

@@ -1,8 +1,9 @@
 package com.gasparian.rob.feature.milestones.data.mapper
 
-import com.gasparian.rob.feature.milestones.data.remote.RcvCurrentFocusDto
-import com.gasparian.rob.feature.milestones.data.remote.RcvMilestoneDto
-import com.gasparian.rob.feature.milestones.data.remote.RcvMilestonesResponseDto
+import com.gasparian.rob.feature.milestones.data.remote.CurrentFocusDto
+import com.gasparian.rob.feature.milestones.data.remote.MilestoneDto
+import com.gasparian.rob.feature.milestones.data.remote.MilestonesResponseDto
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -23,17 +24,18 @@ class RcvMilestonesMappersTest {
         val domain = milestonesDto.toEntityGraph(updatedAtMillis = 456L).toDomain()
 
         assertEquals(listOf("KMP", "Room"), domain.currentFocus.topics)
+        assertEquals(LocalDate.parse("2026-05-18"), domain.recentMilestones.single().completedAt)
         assertEquals(listOf("Navigation 3"), domain.recentMilestones.single().topics)
     }
 }
 
-private val milestonesDto = RcvMilestonesResponseDto(
-    currentFocus = RcvCurrentFocusDto(
+private val milestonesDto = MilestonesResponseDto(
+    currentFocus = CurrentFocusDto(
         summary = "KMP migration",
         topics = listOf("KMP", "Room"),
     ),
     recentMilestones = listOf(
-        RcvMilestoneDto(
+        MilestoneDto(
             id = "nav3",
             title = "Navigation skeleton",
             description = "Added Navigation 3 skeleton.",

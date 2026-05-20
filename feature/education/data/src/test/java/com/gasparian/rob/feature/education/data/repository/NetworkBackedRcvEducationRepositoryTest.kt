@@ -3,18 +3,20 @@ package com.gasparian.rob.feature.education.data.repository
 import app.cash.turbine.test
 import com.gasparian.rob.core.network.RcvNetworkError
 import com.gasparian.rob.core.network.RcvNetworkResult
-import com.gasparian.rob.feature.education.data.local.RcvEducationDao
-import com.gasparian.rob.feature.education.data.local.RcvEducationEntityGraph
-import com.gasparian.rob.feature.education.data.local.RcvEducationItemEntity
-import com.gasparian.rob.feature.education.data.local.RcvEducationLocationEntity
-import com.gasparian.rob.feature.education.data.local.RcvInstitutionEntity
+import com.gasparian.rob.feature.education.data.local.EducationDao
+import com.gasparian.rob.feature.education.data.local.EducationEntityGraph
+import com.gasparian.rob.feature.education.data.local.EducationItemEntity
+import com.gasparian.rob.feature.education.data.local.EducationLocationEntity
+import com.gasparian.rob.feature.education.data.local.InstitutionEntity
 import com.gasparian.rob.feature.education.data.mapper.toEntityGraph
-import com.gasparian.rob.feature.education.data.remote.RcvEducationItemDto
-import com.gasparian.rob.feature.education.data.remote.RcvEducationLocationDto
-import com.gasparian.rob.feature.education.data.remote.RcvEducationProgramDto
-import com.gasparian.rob.feature.education.data.remote.RcvEducationRemoteDataSource
-import com.gasparian.rob.feature.education.data.remote.RcvEducationResponseDto
-import com.gasparian.rob.feature.education.data.remote.RcvInstitutionDto
+import com.gasparian.rob.feature.education.data.remote.EducationItemDto
+import com.gasparian.rob.feature.education.data.remote.EducationLocationDto
+import com.gasparian.rob.feature.education.data.remote.EducationProgramDto
+import com.gasparian.rob.feature.education.data.remote.EducationRemoteDataSource
+import com.gasparian.rob.feature.education.data.remote.EducationResponseDto
+import com.gasparian.rob.feature.education.data.remote.InstitutionDto
+import com.gasparian.rob.feature.education.domain.model.EducationStatus
+import com.gasparian.rob.feature.education.domain.model.InstitutionType
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +29,7 @@ class NetworkBackedRcvEducationRepositoryTest {
     @Test
     fun `education syncs remote data into dao before emitting`() = runTest {
         val dao = FakeRcvEducationDao()
-        val remoteDataSource = mockk<RcvEducationRemoteDataSource>()
+        val remoteDataSource = mockk<EducationRemoteDataSource>()
         coEvery { remoteDataSource.getEducation() } returns RcvNetworkResult.Success(educationResponse)
         val repository = NetworkBackedRcvEducationRepository(remoteDataSource = remoteDataSource, educationDao = dao)
 
@@ -35,6 +37,8 @@ class NetworkBackedRcvEducationRepositoryTest {
             val item = awaitItem()
 
             assertEquals("Yerevan State University", item.getOrThrow().institutions.single().name)
+            assertEquals(InstitutionType.PublicUniversity, item.getOrThrow().institutions.single().type)
+            assertEquals(EducationStatus.Completed, item.getOrThrow().items.single().status)
             assertEquals("ysu", dao.lastReplacedGraph?.institutions?.single()?.id)
             cancelAndIgnoreRemainingEvents()
         }
@@ -43,7 +47,7 @@ class NetworkBackedRcvEducationRepositoryTest {
     @Test
     fun `education emits cached data when remote sync fails`() = runTest {
         val dao = FakeRcvEducationDao(initialGraph = educationResponse.toEntityGraph())
-        val remoteDataSource = mockk<RcvEducationRemoteDataSource>()
+        val remoteDataSource = mockk<EducationRemoteDataSource>()
         coEvery { remoteDataSource.getEducation() } returns RcvNetworkResult.Failure(RcvNetworkError.Timeout)
         val repository = NetworkBackedRcvEducationRepository(remoteDataSource = remoteDataSource, educationDao = dao)
 
@@ -59,7 +63,7 @@ class NetworkBackedRcvEducationRepositoryTest {
     @Test
     fun `education emits failure when remote sync fails and cache is empty`() = runTest {
         val dao = FakeRcvEducationDao()
-        val remoteDataSource = mockk<RcvEducationRemoteDataSource>()
+        val remoteDataSource = mockk<EducationRemoteDataSource>()
         coEvery { remoteDataSource.getEducation() } returns RcvNetworkResult.Failure(RcvNetworkError.Timeout)
         val repository = NetworkBackedRcvEducationRepository(remoteDataSource = remoteDataSource, educationDao = dao)
 
@@ -73,50 +77,50 @@ class NetworkBackedRcvEducationRepositoryTest {
 }
 
 private class FakeRcvEducationDao(
-    initialGraph: RcvEducationEntityGraph = RcvEducationEntityGraph(emptyList(), emptyList(), emptyList()),
-) : RcvEducationDao {
+    initialGraph: EducationEntityGraph = EducationEntityGraph(emptyList(), emptyList(), emptyList()),
+) : EducationDao {
     private val graphFlow = MutableStateFlow(initialGraph)
-    var lastReplacedGraph: RcvEducationEntityGraph? = null
+    var lastReplacedGraph: EducationEntityGraph? = null
 
-    override fun educationGraphFlow(): Flow<RcvEducationEntityGraph> = graphFlow
+    override fun educationGraphFlow(): Flow<EducationEntityGraph> = graphFlow
 
-    override suspend fun replaceEducation(graph: RcvEducationEntityGraph) {
+    override suspend fun replaceEducation(graph: EducationEntityGraph) {
         lastReplacedGraph = graph
         graphFlow.value = graph
     }
 
-    override suspend fun getEducationGraph(): RcvEducationEntityGraph = graphFlow.value
-    override suspend fun getInstitutions(): List<RcvInstitutionEntity> = error("Unused")
-    override fun institutionsFlow(): Flow<List<RcvInstitutionEntity>> = error("Unused")
-    override suspend fun getLocations(): List<RcvEducationLocationEntity> = error("Unused")
-    override fun locationsFlow(): Flow<List<RcvEducationLocationEntity>> = error("Unused")
-    override suspend fun getItems(): List<RcvEducationItemEntity> = error("Unused")
-    override fun itemsFlow(): Flow<List<RcvEducationItemEntity>> = error("Unused")
-    override suspend fun upsertInstitutions(institutions: List<RcvInstitutionEntity>) = error("Unused")
-    override suspend fun upsertLocations(locations: List<RcvEducationLocationEntity>) = error("Unused")
-    override suspend fun upsertItems(items: List<RcvEducationItemEntity>) = error("Unused")
+    override suspend fun getEducationGraph(): EducationEntityGraph = graphFlow.value
+    override suspend fun getInstitutions(): List<InstitutionEntity> = error("Unused")
+    override fun institutionsFlow(): Flow<List<InstitutionEntity>> = error("Unused")
+    override suspend fun getLocations(): List<EducationLocationEntity> = error("Unused")
+    override fun locationsFlow(): Flow<List<EducationLocationEntity>> = error("Unused")
+    override suspend fun getItems(): List<EducationItemEntity> = error("Unused")
+    override fun itemsFlow(): Flow<List<EducationItemEntity>> = error("Unused")
+    override suspend fun upsertInstitutions(institutions: List<InstitutionEntity>) = error("Unused")
+    override suspend fun upsertLocations(locations: List<EducationLocationEntity>) = error("Unused")
+    override suspend fun upsertItems(items: List<EducationItemEntity>) = error("Unused")
     override suspend fun clearInstitutions() = error("Unused")
     override suspend fun clearLocations() = error("Unused")
     override suspend fun clearItems() = error("Unused")
 }
 
-private val educationResponse = RcvEducationResponseDto(
+private val educationResponse = EducationResponseDto(
     institutions = listOf(
-        RcvInstitutionDto(
+        InstitutionDto(
             id = "ysu",
             name = "Yerevan State University",
             shortName = "YSU",
             type = "university",
             description = "Public university in Armenia.",
             websiteUrl = "https://www.ysu.am",
-            location = RcvEducationLocationDto(city = "Yerevan", country = "Armenia"),
+            location = EducationLocationDto(city = "Yerevan", country = "Armenia"),
         ),
     ),
     items = listOf(
-        RcvEducationItemDto(
+        EducationItemDto(
             id = "ysu-management-master",
             institutionId = "ysu",
-            program = RcvEducationProgramDto(
+            program = EducationProgramDto(
                 name = "Management",
                 credential = "Master's Degree",
                 fieldOfStudy = "Management",

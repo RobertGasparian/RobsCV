@@ -1,25 +1,25 @@
 package com.gasparian.rob.feature.home.data.repository
 
-import com.gasparian.rob.feature.education.domain.repository.RcvEducationRepository
-import com.gasparian.rob.feature.experience.domain.repository.RcvExperienceRepository
-import com.gasparian.rob.feature.home.domain.model.RcvHomeData
-import com.gasparian.rob.feature.home.domain.model.RcvHomeError
-import com.gasparian.rob.feature.home.domain.model.RcvHomeResult
-import com.gasparian.rob.feature.home.domain.repository.RcvHomeRepository
-import com.gasparian.rob.feature.milestones.domain.repository.RcvMilestonesRepository
-import com.gasparian.rob.feature.profile.domain.repository.RcvProfileRepository
-import com.gasparian.rob.feature.skills.domain.repository.RcvSkillsRepository
+import com.gasparian.rob.feature.education.domain.repository.EducationRepository
+import com.gasparian.rob.feature.experience.domain.repository.ExperienceRepository
+import com.gasparian.rob.feature.home.domain.model.HomeData
+import com.gasparian.rob.feature.home.domain.model.HomeError
+import com.gasparian.rob.feature.home.domain.model.HomeResult
+import com.gasparian.rob.feature.home.domain.repository.HomeRepository
+import com.gasparian.rob.feature.milestones.domain.repository.MilestonesRepository
+import com.gasparian.rob.feature.profile.domain.repository.ProfileRepository
+import com.gasparian.rob.feature.skills.domain.repository.SkillsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
 class CompositeRcvHomeRepository(
-    private val profileRepository: RcvProfileRepository,
-    private val skillsRepository: RcvSkillsRepository,
-    private val experienceRepository: RcvExperienceRepository,
-    private val educationRepository: RcvEducationRepository,
-    private val milestonesRepository: RcvMilestonesRepository,
-) : RcvHomeRepository {
-    override val homeData: Flow<RcvHomeResult<RcvHomeData>> = combine(
+    private val profileRepository: ProfileRepository,
+    private val skillsRepository: SkillsRepository,
+    private val experienceRepository: ExperienceRepository,
+    private val educationRepository: EducationRepository,
+    private val milestonesRepository: MilestonesRepository,
+) : HomeRepository {
+    override val homeData: Flow<HomeResult<HomeData>> = combine(
         profileRepository.profile,
         skillsRepository.skills,
         experienceRepository.experience,
@@ -32,8 +32,8 @@ class CompositeRcvHomeRepository(
         val education = educationResult.getOrElse { return@combine it.toHomeFailure() }
         val milestones = milestonesResult.getOrElse { return@combine it.toHomeFailure() }
 
-        RcvHomeResult.Success(
-            RcvHomeData(
+        HomeResult.Success(
+            HomeData(
                 profile = profile,
                 skills = skills,
                 experience = experience,
@@ -44,6 +44,6 @@ class CompositeRcvHomeRepository(
     }
 }
 
-private fun Throwable.toHomeFailure(): RcvHomeResult.Failure = RcvHomeResult.Failure(
-    error = RcvHomeError.Unknown(message = message ?: "Unable to load home data"),
+private fun Throwable.toHomeFailure(): HomeResult.Failure = HomeResult.Failure(
+    error = HomeError.Unknown(message = message ?: "Unable to load home data"),
 )

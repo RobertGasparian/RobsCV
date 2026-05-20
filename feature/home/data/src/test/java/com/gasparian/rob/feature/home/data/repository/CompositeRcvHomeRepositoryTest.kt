@@ -1,21 +1,21 @@
 package com.gasparian.rob.feature.home.data.repository
 
 import app.cash.turbine.test
-import com.gasparian.rob.feature.education.domain.model.RcvEducation
-import com.gasparian.rob.feature.education.domain.repository.RcvEducationRepository
-import com.gasparian.rob.feature.experience.domain.model.RcvExperience
-import com.gasparian.rob.feature.experience.domain.repository.RcvExperienceRepository
-import com.gasparian.rob.feature.home.domain.model.RcvHomeError
-import com.gasparian.rob.feature.home.domain.model.RcvHomeResult
-import com.gasparian.rob.feature.milestones.domain.model.RcvCurrentFocus
-import com.gasparian.rob.feature.milestones.domain.model.RcvMilestones
-import com.gasparian.rob.feature.milestones.domain.repository.RcvMilestonesRepository
-import com.gasparian.rob.feature.profile.domain.model.RcvProfile
-import com.gasparian.rob.feature.profile.domain.model.RcvProfileContact
-import com.gasparian.rob.feature.profile.domain.model.RcvProfileLocation
-import com.gasparian.rob.feature.profile.domain.repository.RcvProfileRepository
-import com.gasparian.rob.feature.skills.domain.model.RcvSkills
-import com.gasparian.rob.feature.skills.domain.repository.RcvSkillsRepository
+import com.gasparian.rob.feature.education.domain.model.Education
+import com.gasparian.rob.feature.education.domain.repository.EducationRepository
+import com.gasparian.rob.feature.experience.domain.model.Experience
+import com.gasparian.rob.feature.experience.domain.repository.ExperienceRepository
+import com.gasparian.rob.feature.home.domain.model.HomeError
+import com.gasparian.rob.feature.home.domain.model.HomeResult
+import com.gasparian.rob.feature.milestones.domain.model.CurrentFocus
+import com.gasparian.rob.feature.milestones.domain.model.Milestones
+import com.gasparian.rob.feature.milestones.domain.repository.MilestonesRepository
+import com.gasparian.rob.feature.profile.domain.model.Profile
+import com.gasparian.rob.feature.profile.domain.model.ProfileContact
+import com.gasparian.rob.feature.profile.domain.model.ProfileLocation
+import com.gasparian.rob.feature.profile.domain.repository.ProfileRepository
+import com.gasparian.rob.feature.skills.domain.model.Skills
+import com.gasparian.rob.feature.skills.domain.repository.SkillsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
@@ -37,8 +37,8 @@ class CompositeRcvHomeRepositoryTest {
         repository.homeData.test {
             val item = awaitItem()
 
-            assertInstanceOf(RcvHomeResult.Success::class.java, item)
-            assertEquals(profile, (item as RcvHomeResult.Success).data.profile)
+            assertInstanceOf(HomeResult.Success::class.java, item)
+            assertEquals(profile, (item as HomeResult.Success).data.profile)
             assertEquals(skills, item.data.skills)
             cancelAndIgnoreRemainingEvents()
         }
@@ -57,8 +57,8 @@ class CompositeRcvHomeRepositoryTest {
         repository.homeData.test {
             val item = awaitItem()
 
-            assertInstanceOf(RcvHomeResult.Failure::class.java, item)
-            val error = (item as RcvHomeResult.Failure).error as RcvHomeError.Unknown
+            assertInstanceOf(HomeResult.Failure::class.java, item)
+            val error = (item as HomeResult.Failure).error as HomeError.Unknown
             assertEquals("Profile missing", error.message)
             cancelAndIgnoreRemainingEvents()
         }
@@ -66,42 +66,42 @@ class CompositeRcvHomeRepositoryTest {
 }
 
 private class FakeProfileRepository(
-    result: Result<RcvProfile>,
-) : RcvProfileRepository {
-    override val profile: Flow<Result<RcvProfile>> = MutableStateFlow(result)
+    result: Result<Profile>,
+) : ProfileRepository {
+    override val profile: Flow<Result<Profile>> = MutableStateFlow(result)
 }
 
 private class FakeSkillsRepository(
-    result: Result<RcvSkills>,
-) : RcvSkillsRepository {
-    override val skills: Flow<Result<RcvSkills>> = MutableStateFlow(result)
+    result: Result<Skills>,
+) : SkillsRepository {
+    override val skills: Flow<Result<Skills>> = MutableStateFlow(result)
 }
 
 private class FakeExperienceRepository(
-    result: Result<RcvExperience>,
-) : RcvExperienceRepository {
-    override val experience: Flow<Result<RcvExperience>> = MutableStateFlow(result)
+    result: Result<Experience>,
+) : ExperienceRepository {
+    override val experience: Flow<Result<Experience>> = MutableStateFlow(result)
 }
 
 private class FakeEducationRepository(
-    result: Result<RcvEducation>,
-) : RcvEducationRepository {
-    override val education: Flow<Result<RcvEducation>> = MutableStateFlow(result)
+    result: Result<Education>,
+) : EducationRepository {
+    override val education: Flow<Result<Education>> = MutableStateFlow(result)
 }
 
 private class FakeMilestonesRepository(
-    result: Result<RcvMilestones>,
-) : RcvMilestonesRepository {
-    override val milestones: Flow<Result<RcvMilestones>> = MutableStateFlow(result)
+    result: Result<Milestones>,
+) : MilestonesRepository {
+    override val milestones: Flow<Result<Milestones>> = MutableStateFlow(result)
 }
 
-private val profile = RcvProfile(
+private val profile = Profile(
     id = "rob",
     displayName = "Robert Gasparyan",
     headline = "Android Engineer",
     shortBio = "Senior Android engineer.",
-    location = RcvProfileLocation(city = "Toronto", region = "ON", country = "Canada", addressLine = null),
-    contact = RcvProfileContact(
+    location = ProfileLocation(city = "Toronto", region = "ON", country = "Canada", addressLine = null),
+    contact = ProfileContact(
         email = "rob.gasparian@gmail.com",
         phone = "+1 437-551-9859",
         linkedin = "linkedin.com/in/rob-gasparian/",
@@ -110,10 +110,10 @@ private val profile = RcvProfile(
     summaryOfQualifications = emptyList(),
 )
 
-private val skills = RcvSkills(categories = emptyList(), skills = emptyList())
-private val experience = RcvExperience(roles = emptyList())
-private val education = RcvEducation(institutions = emptyList(), items = emptyList())
-private val milestones = RcvMilestones(
-    currentFocus = RcvCurrentFocus(summary = "KMP migration", topics = emptyList()),
+private val skills = Skills(categories = emptyList(), skills = emptyList())
+private val experience = Experience(roles = emptyList())
+private val education = Education(institutions = emptyList(), items = emptyList())
+private val milestones = Milestones(
+    currentFocus = CurrentFocus(summary = "KMP migration", topics = emptyList()),
     recentMilestones = emptyList(),
 )

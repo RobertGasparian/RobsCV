@@ -1,22 +1,25 @@
 package com.gasparian.rob.feature.education.data.mapper
 
 import com.gasparian.rob.core.network.RcvNetworkError
-import com.gasparian.rob.feature.education.data.local.RcvEducationEntityGraph
-import com.gasparian.rob.feature.education.data.local.RcvEducationItemEntity
-import com.gasparian.rob.feature.education.data.local.RcvEducationLocationEntity
-import com.gasparian.rob.feature.education.data.local.RcvInstitutionEntity
-import com.gasparian.rob.feature.education.data.remote.RcvEducationResponseDto
-import com.gasparian.rob.feature.education.domain.model.RcvEducation
-import com.gasparian.rob.feature.education.domain.model.RcvEducationItem
-import com.gasparian.rob.feature.education.domain.model.RcvEducationLocation
-import com.gasparian.rob.feature.education.domain.model.RcvEducationProgram
-import com.gasparian.rob.feature.education.domain.model.RcvFaculty
-import com.gasparian.rob.feature.education.domain.model.RcvInstitution
+import com.gasparian.rob.feature.education.data.local.EducationEntityGraph
+import com.gasparian.rob.feature.education.data.local.EducationItemEntity
+import com.gasparian.rob.feature.education.data.local.EducationLocationEntity
+import com.gasparian.rob.feature.education.data.local.InstitutionEntity
+import com.gasparian.rob.feature.education.data.remote.EducationResponseDto
+import com.gasparian.rob.feature.education.domain.model.Education
+import com.gasparian.rob.feature.education.domain.model.EducationItem
+import com.gasparian.rob.feature.education.domain.model.EducationLocation
+import com.gasparian.rob.feature.education.domain.model.EducationProgram
+import com.gasparian.rob.feature.education.domain.model.EducationStatus
+import com.gasparian.rob.feature.education.domain.model.Faculty
+import com.gasparian.rob.feature.education.domain.model.Institution
+import com.gasparian.rob.feature.education.domain.model.InstitutionType
+import kotlinx.datetime.LocalDate
 
-internal fun RcvEducationResponseDto.toEntityGraph(): RcvEducationEntityGraph = RcvEducationEntityGraph(
+internal fun EducationResponseDto.toEntityGraph(): EducationEntityGraph = EducationEntityGraph(
     institutions =
     institutions.map { institution ->
-        RcvInstitutionEntity(
+        InstitutionEntity(
             id = institution.id,
             name = institution.name,
             shortName = institution.shortName,
@@ -28,7 +31,7 @@ internal fun RcvEducationResponseDto.toEntityGraph(): RcvEducationEntityGraph = 
     },
     locations =
     institutions.map { institution ->
-        RcvEducationLocationEntity(
+        EducationLocationEntity(
             id = "institution:${institution.id}",
             city = institution.location.city,
             region = institution.location.region,
@@ -38,7 +41,7 @@ internal fun RcvEducationResponseDto.toEntityGraph(): RcvEducationEntityGraph = 
     },
     items =
     items.map { item ->
-        RcvEducationItemEntity(
+        EducationItemEntity(
             id = item.id,
             institutionId = item.institutionId,
             facultyName = item.faculty?.name,
@@ -52,20 +55,20 @@ internal fun RcvEducationResponseDto.toEntityGraph(): RcvEducationEntityGraph = 
     },
 )
 
-internal fun RcvEducationEntityGraph.toDomain(): RcvEducation = RcvEducation(
+internal fun EducationEntityGraph.toDomain(): Education = Education(
     institutions =
     institutions.map { institution ->
         val location =
             requireNotNull(locations.firstOrNull { location -> location.id == institution.locationId })
-        RcvInstitution(
+        Institution(
             id = institution.id,
             name = institution.name,
             shortName = institution.shortName,
-            type = institution.type,
+            type = institution.type.toInstitutionType(),
             description = institution.description,
             websiteUrl = institution.websiteUrl,
             location =
-            RcvEducationLocation(
+            EducationLocation(
                 city = location.city,
                 region = location.region,
                 country = location.country,
@@ -75,21 +78,33 @@ internal fun RcvEducationEntityGraph.toDomain(): RcvEducation = RcvEducation(
     },
     items =
     items.map { item ->
-        RcvEducationItem(
+        EducationItem(
             id = item.id,
             institutionId = item.institutionId,
-            faculty = item.facultyName?.let(::RcvFaculty),
+            faculty = item.facultyName?.let(::Faculty),
             program =
-            RcvEducationProgram(
+            EducationProgram(
                 name = item.programName,
                 credential = item.credential,
                 fieldOfStudy = item.fieldOfStudy,
             ),
-            startDate = item.startDate,
-            endDate = item.endDate,
-            status = item.status,
+            startDate = LocalDate.parse(item.startDate),
+            endDate = LocalDate.parse(item.endDate),
+            status = item.status.toEducationStatus(),
         )
     },
 )
 
 internal fun RcvNetworkError.toException(): Throwable = IllegalStateException(toString())
+
+private fun String.toInstitutionType(): InstitutionType = when (lowercase()) {
+    "public university", "university" -> InstitutionType.PublicUniversity
+    "training center", "bootcamp" -> InstitutionType.TrainingCenter
+    else -> InstitutionType.Unknown(rawValue = this)
+}
+
+private fun String.toEducationStatus(): EducationStatus = when (lowercase()) {
+    "completed" -> EducationStatus.Completed
+    "in_progress", "in progress", "active" -> EducationStatus.InProgress
+    else -> EducationStatus.Unknown(rawValue = this)
+}

@@ -80,10 +80,12 @@ Experimental Android and Jetpack APIs are welcome when they improve the app or d
 Android skill. Avoid only those libraries or APIs that have obvious bugs, severe instability, or
 would create more maintenance burden than value.
 
-Use `Rcv` as the code symbol prefix for project-specific classes, composables, functions, variables,
-files, tokens, and helpers. Keep official names as `RobsCV`, including the app name, repository
-name, user-facing text, documentation titles, Android resource names, and the design system name
-unless the user explicitly asks to rename them.
+Do not use `Rcv` as a blanket prefix for every code symbol. Prefer clear, local names such as
+`ProfileRepository`, `SkillsScreen`, or `NetworkClient` when package/module context already makes
+ownership obvious. Use the `Rcv` prefix only when it prevents ambiguity with Android, Kotlin,
+Java/system APIs, third-party types, or similarly named project concepts. Keep official names as
+`RobsCV`, including the app name, repository name, user-facing text, documentation titles, Android
+resource names, and the design system name unless the user explicitly asks to rename them.
 
 ## UX Direction
 
