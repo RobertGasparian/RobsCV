@@ -62,7 +62,12 @@ destinations as serializable route/state objects, avoiding Android `Context`, `I
 objects in route definitions, and keeping navigation decisions in state/logic layers where practical
 rather than burying them inside UI components.
 
-Include meaningful unit tests and UI tests. Prefer Paparazzi for screenshot/UI testing where it
+Include meaningful unit tests and UI tests. Create unit tests for all production classes in
+non-UI and non-navigation modules, including domain, data, database, network, and DI-adjacent logic
+when behavior can be verified without Android framework wiring. When modifying production code,
+update or add unit tests as needed and run the unit tests that cover the changed classes. UI
+components should be covered with Paparazzi screenshot tests, but defer that infrastructure until
+the project is ready for UI screenshot testing. Prefer Paparazzi for screenshot/UI testing where it
 gives fast, reliable feedback.
 
 Keep shared and future-KMP tests platform-friendly. Use MockK only for Android/JVM-specific tests
