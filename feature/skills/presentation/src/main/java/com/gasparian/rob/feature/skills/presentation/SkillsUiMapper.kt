@@ -10,6 +10,7 @@ internal fun Result<Skills>.toSkillsUiState(): SkillsUiState = fold(
     onSuccess = { skills ->
         SkillsUiState(
             isLoading = false,
+            isRefreshing = false,
             skills = skills.toUiModel(),
             errorMessage = null,
         )
@@ -17,6 +18,7 @@ internal fun Result<Skills>.toSkillsUiState(): SkillsUiState = fold(
     onFailure = { throwable ->
         SkillsUiState(
             isLoading = false,
+            isRefreshing = false,
             skills = null,
             errorMessage = throwable.toUiErrorMessage(),
         )

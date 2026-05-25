@@ -5,9 +5,11 @@ import com.gasparian.rob.core.network.RcvNetworkError
 import com.gasparian.rob.core.network.RcvNetworkResult
 import com.gasparian.rob.feature.education.data.local.EducationDao
 import com.gasparian.rob.feature.education.data.local.EducationEntityGraph
+import com.gasparian.rob.feature.education.data.local.EducationEntityReadGraph
 import com.gasparian.rob.feature.education.data.local.EducationItemEntity
 import com.gasparian.rob.feature.education.data.local.EducationLocationEntity
 import com.gasparian.rob.feature.education.data.local.InstitutionEntity
+import com.gasparian.rob.feature.education.data.local.InstitutionWithEducationEntity
 import com.gasparian.rob.feature.education.data.mapper.toEntityGraph
 import com.gasparian.rob.feature.education.data.remote.EducationItemDto
 import com.gasparian.rob.feature.education.data.remote.EducationLocationDto
@@ -32,6 +34,8 @@ class NetworkBackedRcvEducationRepositoryTest {
         val remoteDataSource = mockk<EducationRemoteDataSource>()
         coEvery { remoteDataSource.getEducation() } returns RcvNetworkResult.Success(educationResponse)
         val repository = NetworkBackedRcvEducationRepository(remoteDataSource = remoteDataSource, educationDao = dao)
+
+        repository.sync()
 
         repository.education.test {
             val item = awaitItem()
@@ -74,23 +78,46 @@ class NetworkBackedRcvEducationRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `clearCache clears dao cache without syncing remote data`() = runTest {
+        val dao = FakeRcvEducationDao(initialGraph = educationResponse.toEntityGraph())
+        val remoteDataSource = mockk<EducationRemoteDataSource>()
+        val repository = NetworkBackedRcvEducationRepository(remoteDataSource = remoteDataSource, educationDao = dao)
+
+        repository.clearCache()
+
+        assertEquals(1, dao.clearEducationCacheCallCount)
+        assertEquals(null, dao.lastReplacedGraph)
+    }
 }
 
 private class FakeRcvEducationDao(
     initialGraph: EducationEntityGraph = EducationEntityGraph(emptyList(), emptyList(), emptyList()),
 ) : EducationDao {
-    private val graphFlow = MutableStateFlow(initialGraph)
+    private val graphFlow = MutableStateFlow(initialGraph.toReadGraph())
+    private var graph = initialGraph
     var lastReplacedGraph: EducationEntityGraph? = null
+    var clearEducationCacheCallCount = 0
 
-    override fun educationGraphFlow(): Flow<EducationEntityGraph> = graphFlow
+    override fun educationGraphFlow(): Flow<EducationEntityReadGraph> = graphFlow
 
     override suspend fun replaceEducation(graph: EducationEntityGraph) {
+        this.graph = graph
         lastReplacedGraph = graph
-        graphFlow.value = graph
+        graphFlow.value = graph.toReadGraph()
     }
 
-    override suspend fun getEducationGraph(): EducationEntityGraph = graphFlow.value
+    override suspend fun getEducationGraph(): EducationEntityGraph = graph
+    override suspend fun clearEducationCache() {
+        clearEducationCacheCallCount++
+        graph = EducationEntityGraph(emptyList(), emptyList(), emptyList())
+        graphFlow.value = graph.toReadGraph()
+    }
+
     override suspend fun getInstitutions(): List<InstitutionEntity> = error("Unused")
+    override fun institutionsWithEducationFlow(): Flow<List<InstitutionWithEducationEntity>> = error("Unused")
+    override suspend fun getInstitutionsWithEducation(): List<InstitutionWithEducationEntity> = error("Unused")
     override fun institutionsFlow(): Flow<List<InstitutionEntity>> = error("Unused")
     override suspend fun getLocations(): List<EducationLocationEntity> = error("Unused")
     override fun locationsFlow(): Flow<List<EducationLocationEntity>> = error("Unused")
@@ -103,6 +130,16 @@ private class FakeRcvEducationDao(
     override suspend fun clearLocations() = error("Unused")
     override suspend fun clearItems() = error("Unused")
 }
+
+private fun EducationEntityGraph.toReadGraph(): EducationEntityReadGraph = EducationEntityReadGraph(
+    institutions = institutions.map { institution ->
+        InstitutionWithEducationEntity(
+            institution = institution,
+            location = locations.single { location -> location.id == institution.locationId },
+            items = items.filter { item -> item.institutionId == institution.id },
+        )
+    },
+)
 
 private val educationResponse = EducationResponseDto(
     institutions = listOf(

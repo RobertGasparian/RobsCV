@@ -1,7 +1,9 @@
 package com.gasparian.rob.feature.education.data.local
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 
 data class EducationEntityGraph(
     val institutions: List<InstitutionEntity>,
@@ -10,6 +12,26 @@ data class EducationEntityGraph(
 ) {
     fun isEmpty(): Boolean = institutions.isEmpty() && items.isEmpty()
 }
+
+data class EducationEntityReadGraph(
+    val institutions: List<InstitutionWithEducationEntity>,
+) {
+    fun isEmpty(): Boolean = institutions.isEmpty()
+}
+
+data class InstitutionWithEducationEntity(
+    @Embedded val institution: InstitutionEntity,
+    @Relation(
+        parentColumn = "locationId",
+        entityColumn = "id",
+    )
+    val location: EducationLocationEntity,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "institutionId",
+    )
+    val items: List<EducationItemEntity>,
+)
 
 @Entity(tableName = "rcv_institution")
 data class InstitutionEntity(

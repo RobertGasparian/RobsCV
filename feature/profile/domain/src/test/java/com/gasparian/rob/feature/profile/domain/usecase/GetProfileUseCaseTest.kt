@@ -37,10 +37,40 @@ class GetProfileUseCaseTest {
 
         assertEquals(Result.success(expected), useCase().first())
     }
+
+    @Test
+    fun `clear profile cache delegates to repository`() = runTest {
+        val repository = FakeProfileRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = ClearProfileCacheUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.clearCacheCallCount)
+    }
+
+    @Test
+    fun `sync profile delegates to repository`() = runTest {
+        val repository = FakeProfileRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = SyncProfileUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.syncCallCount)
+    }
 }
 
 private class FakeProfileRepository(
     result: Result<Profile>,
 ) : ProfileRepository {
     override val profile: Flow<Result<Profile>> = flowOf(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }

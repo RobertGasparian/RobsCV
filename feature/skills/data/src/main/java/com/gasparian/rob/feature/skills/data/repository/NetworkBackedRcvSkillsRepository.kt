@@ -9,7 +9,6 @@ import com.gasparian.rob.feature.skills.domain.model.Skills
 import com.gasparian.rob.feature.skills.domain.repository.SkillsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvSkillsRepository(
     private val remoteDataSource: SkillsRemoteDataSource,
@@ -24,11 +23,12 @@ class NetworkBackedRcvSkillsRepository(
                 ?.let(Result.Companion::success)
                 ?: Result.failure(IllegalStateException("Skills cache is empty"))
         }
-        .onStart {
-            syncSkillsFromRemote()
-        }
 
-    private suspend fun syncSkillsFromRemote() {
+    override suspend fun clearCache() {
+        skillsDao.clearSkillsCache()
+    }
+
+    override suspend fun sync() {
         when (val remoteResult = remoteDataSource.getSkills()) {
             is RcvNetworkResult.Failure -> Unit
             is RcvNetworkResult.Success -> skillsDao.replaceSkills(remoteResult.data.toEntityGraph())

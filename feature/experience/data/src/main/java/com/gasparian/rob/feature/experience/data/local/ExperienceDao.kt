@@ -29,10 +29,15 @@ interface ExperienceDao {
     suspend fun replaceExperience(
         graph: ExperienceEntityGraph,
     ) {
-        clearHighlights()
-        clearRoles()
+        clearExperienceCache()
         upsertRoles(graph.roles)
         upsertHighlights(graph.highlights)
+    }
+
+    @Transaction
+    suspend fun clearExperienceCache() {
+        clearHighlights()
+        clearRoles()
     }
 
     @Query("SELECT * FROM rcv_experience_role ORDER BY startDate DESC")

@@ -9,7 +9,6 @@ import com.gasparian.rob.feature.profile.domain.model.Profile
 import com.gasparian.rob.feature.profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvProfileRepository(
     private val remoteDataSource: ProfileRemoteDataSource,
@@ -24,11 +23,12 @@ class NetworkBackedRcvProfileRepository(
                 ?.let(Result.Companion::success)
                 ?: Result.failure(IllegalStateException("Profile cache is empty"))
         }
-        .onStart {
-            syncProfileFromRemote()
-        }
 
-    private suspend fun syncProfileFromRemote() {
+    override suspend fun clearCache() {
+        profileDao.clearProfileCache()
+    }
+
+    override suspend fun sync() {
         when (val remoteResult = remoteDataSource.getProfile()) {
             is RcvNetworkResult.Failure -> Unit
 

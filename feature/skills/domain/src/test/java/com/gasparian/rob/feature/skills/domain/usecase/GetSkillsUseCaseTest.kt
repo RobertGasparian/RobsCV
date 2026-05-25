@@ -17,10 +17,40 @@ class GetSkillsUseCaseTest {
 
         assertEquals(Result.success(expected), useCase().first())
     }
+
+    @Test
+    fun `clear skills cache delegates to repository`() = runTest {
+        val repository = FakeSkillsRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = ClearSkillsCacheUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.clearCacheCallCount)
+    }
+
+    @Test
+    fun `sync skills delegates to repository`() = runTest {
+        val repository = FakeSkillsRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = SyncSkillsUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.syncCallCount)
+    }
 }
 
 private class FakeSkillsRepository(
     result: Result<Skills>,
 ) : SkillsRepository {
     override val skills: Flow<Result<Skills>> = flowOf(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }

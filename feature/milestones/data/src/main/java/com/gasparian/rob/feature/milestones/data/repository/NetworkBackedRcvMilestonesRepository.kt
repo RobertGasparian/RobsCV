@@ -9,7 +9,6 @@ import com.gasparian.rob.feature.milestones.domain.model.Milestones
 import com.gasparian.rob.feature.milestones.domain.repository.MilestonesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvMilestonesRepository(
     private val remoteDataSource: MilestonesRemoteDataSource,
@@ -24,11 +23,12 @@ class NetworkBackedRcvMilestonesRepository(
                 ?.let(Result.Companion::success)
                 ?: Result.failure(IllegalStateException("Milestones cache is empty"))
         }
-        .onStart {
-            syncMilestonesFromRemote()
-        }
 
-    private suspend fun syncMilestonesFromRemote() {
+    override suspend fun clearCache() {
+        milestonesDao.clearMilestonesCache()
+    }
+
+    override suspend fun sync() {
         when (val remoteResult = remoteDataSource.getMilestones()) {
             is RcvNetworkResult.Failure -> Unit
 

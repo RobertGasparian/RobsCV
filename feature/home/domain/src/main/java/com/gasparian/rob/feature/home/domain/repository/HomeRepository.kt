@@ -6,4 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
     val homeData: Flow<HomeResult<HomeData>>
+
+    suspend fun sync()
+
+    suspend fun clearCache()
 }

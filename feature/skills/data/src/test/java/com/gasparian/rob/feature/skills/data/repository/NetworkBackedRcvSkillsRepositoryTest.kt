@@ -31,6 +31,8 @@ class NetworkBackedRcvSkillsRepositoryTest {
         coEvery { remoteDataSource.getSkills() } returns RcvNetworkResult.Success(skillsResponse)
         val repository = NetworkBackedRcvSkillsRepository(remoteDataSource = remoteDataSource, skillsDao = dao)
 
+        repository.sync()
+
         repository.skills.test {
             val item = awaitItem()
 
@@ -72,6 +74,18 @@ class NetworkBackedRcvSkillsRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `clearCache clears dao cache without syncing remote data`() = runTest {
+        val dao = FakeRcvSkillsDao(initialGraph = skillsResponse.toEntityGraph())
+        val remoteDataSource = mockk<SkillsRemoteDataSource>()
+        val repository = NetworkBackedRcvSkillsRepository(remoteDataSource = remoteDataSource, skillsDao = dao)
+
+        repository.clearCache()
+
+        assertEquals(1, dao.clearSkillsCacheCallCount)
+        assertEquals(null, dao.lastReplacedGraph)
+    }
 }
 
 private class FakeRcvSkillsDao(
@@ -79,6 +93,7 @@ private class FakeRcvSkillsDao(
 ) : SkillsDao {
     private val graphFlow = MutableStateFlow(initialGraph)
     var lastReplacedGraph: SkillsEntityGraph? = null
+    var clearSkillsCacheCallCount = 0
 
     override fun skillsGraphFlow(): Flow<SkillsEntityGraph> = graphFlow
 
@@ -88,6 +103,11 @@ private class FakeRcvSkillsDao(
     }
 
     override suspend fun getSkillsGraph(): SkillsEntityGraph = graphFlow.value
+    override suspend fun clearSkillsCache() {
+        clearSkillsCacheCallCount++
+        graphFlow.value = SkillsEntityGraph(emptyList(), emptyList(), emptyList())
+    }
+
     override suspend fun getCategories(): List<SkillCategoryEntity> = error("Unused")
     override fun categoriesFlow(): Flow<List<SkillCategoryEntity>> = error("Unused")
     override suspend fun getSkills(): List<SkillEntity> = error("Unused")

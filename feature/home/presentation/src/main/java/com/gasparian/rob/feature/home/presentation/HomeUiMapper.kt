@@ -8,6 +8,7 @@ internal fun HomeResult<HomeData>.toHomeUiState(): HomeUiState = when (this) {
     is HomeResult.Success ->
         HomeUiState(
             isLoading = false,
+            isRefreshing = false,
             homeData = data,
             errorMessage = null,
         )
@@ -15,6 +16,7 @@ internal fun HomeResult<HomeData>.toHomeUiState(): HomeUiState = when (this) {
     is HomeResult.Failure ->
         HomeUiState(
             isLoading = false,
+            isRefreshing = false,
             homeData = null,
             errorMessage = error.toUiErrorMessage(),
         )

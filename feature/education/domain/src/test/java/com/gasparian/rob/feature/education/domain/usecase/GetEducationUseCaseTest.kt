@@ -17,10 +17,40 @@ class GetEducationUseCaseTest {
 
         assertEquals(Result.success(expected), useCase().first())
     }
+
+    @Test
+    fun `clear education cache delegates to repository`() = runTest {
+        val repository = FakeEducationRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = ClearEducationCacheUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.clearCacheCallCount)
+    }
+
+    @Test
+    fun `sync education delegates to repository`() = runTest {
+        val repository = FakeEducationRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = SyncEducationUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.syncCallCount)
+    }
 }
 
 private class FakeEducationRepository(
     result: Result<Education>,
 ) : EducationRepository {
     override val education: Flow<Result<Education>> = flowOf(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }

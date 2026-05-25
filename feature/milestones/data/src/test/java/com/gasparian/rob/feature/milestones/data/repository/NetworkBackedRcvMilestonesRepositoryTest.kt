@@ -35,6 +35,8 @@ class NetworkBackedRcvMilestonesRepositoryTest {
             currentTimeMillis = { 456L },
         )
 
+        repository.sync()
+
         repository.milestones.test {
             val item = awaitItem()
 
@@ -75,6 +77,22 @@ class NetworkBackedRcvMilestonesRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `clearCache clears dao cache without syncing remote data`() = runTest {
+        val dao = FakeRcvMilestonesDao(initialGraph = milestonesResponse.toEntityGraph(updatedAtMillis = 111L))
+        val remoteDataSource = mockk<MilestonesRemoteDataSource>()
+        val repository = NetworkBackedRcvMilestonesRepository(
+            remoteDataSource = remoteDataSource,
+            milestonesDao = dao,
+            currentTimeMillis = { 222L },
+        )
+
+        repository.clearCache()
+
+        assertEquals(1, dao.clearMilestonesCacheCallCount)
+        assertEquals(null, dao.lastReplacedGraph)
+    }
 }
 
 private class FakeRcvMilestonesDao(
@@ -82,6 +100,7 @@ private class FakeRcvMilestonesDao(
 ) : MilestonesDao {
     private val graphFlow = MutableStateFlow(initialGraph)
     var lastReplacedGraph: MilestonesEntityGraph? = null
+    var clearMilestonesCacheCallCount = 0
 
     override fun milestonesGraphFlow(): Flow<MilestonesEntityGraph?> = graphFlow
 
@@ -91,6 +110,11 @@ private class FakeRcvMilestonesDao(
     }
 
     override suspend fun getMilestonesGraph(): MilestonesEntityGraph? = graphFlow.value
+    override suspend fun clearMilestonesCache() {
+        clearMilestonesCacheCallCount++
+        graphFlow.value = null
+    }
+
     override suspend fun getCurrentFocus(id: String): CurrentFocusEntity? = error("Unused")
     override fun currentFocusFlow(id: String): Flow<CurrentFocusEntity?> = error("Unused")
     override suspend fun getCurrentFocusTopics(): List<CurrentFocusTopicEntity> = error("Unused")

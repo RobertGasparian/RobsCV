@@ -8,6 +8,7 @@ internal fun Result<Milestones>.toMilestonesUiState(): MilestonesUiState = fold(
     onSuccess = { milestones ->
         MilestonesUiState(
             isLoading = false,
+            isRefreshing = false,
             milestones = milestones.toUiModel(),
             errorMessage = null,
         )
@@ -15,6 +16,7 @@ internal fun Result<Milestones>.toMilestonesUiState(): MilestonesUiState = fold(
     onFailure = { throwable ->
         MilestonesUiState(
             isLoading = false,
+            isRefreshing = false,
             milestones = null,
             errorMessage = throwable.toUiErrorMessage(),
         )

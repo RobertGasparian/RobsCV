@@ -5,4 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface MilestonesRepository {
     val milestones: Flow<Result<Milestones>>
+
+    suspend fun sync()
+
+    suspend fun clearCache()
 }

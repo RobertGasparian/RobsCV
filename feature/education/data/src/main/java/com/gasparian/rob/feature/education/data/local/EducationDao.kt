@@ -5,21 +5,20 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 @Dao
 interface EducationDao {
-    fun educationGraphFlow(): Flow<EducationEntityGraph> = combine(
-        institutionsFlow(),
-        locationsFlow(),
-        itemsFlow(),
-    ) { institutions, locations, items ->
-        EducationEntityGraph(
-            institutions = institutions,
-            locations = locations,
-            items = items,
-        )
-    }
+    @Transaction
+    @Query("SELECT * FROM rcv_institution ORDER BY name")
+    fun institutionsWithEducationFlow(): Flow<List<InstitutionWithEducationEntity>>
+
+    fun educationGraphFlow(): Flow<EducationEntityReadGraph> = institutionsWithEducationFlow()
+        .map { institutions ->
+            EducationEntityReadGraph(
+                institutions = institutions,
+            )
+        }
 
     @Transaction
     suspend fun getEducationGraph(): EducationEntityGraph = EducationEntityGraph(
@@ -32,16 +31,25 @@ interface EducationDao {
     suspend fun replaceEducation(
         graph: EducationEntityGraph,
     ) {
-        clearItems()
-        clearInstitutions()
-        clearLocations()
+        clearEducationCache()
         upsertLocations(graph.locations)
         upsertInstitutions(graph.institutions)
         upsertItems(graph.items)
     }
 
+    @Transaction
+    suspend fun clearEducationCache() {
+        clearItems()
+        clearInstitutions()
+        clearLocations()
+    }
+
     @Query("SELECT * FROM rcv_institution ORDER BY name")
     suspend fun getInstitutions(): List<InstitutionEntity>
+
+    @Transaction
+    @Query("SELECT * FROM rcv_institution ORDER BY name")
+    suspend fun getInstitutionsWithEducation(): List<InstitutionWithEducationEntity>
 
     @Query("SELECT * FROM rcv_institution ORDER BY name")
     fun institutionsFlow(): Flow<List<InstitutionEntity>>

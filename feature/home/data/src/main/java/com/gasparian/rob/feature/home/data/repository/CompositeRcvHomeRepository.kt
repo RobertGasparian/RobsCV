@@ -9,6 +9,9 @@ import com.gasparian.rob.feature.home.domain.repository.HomeRepository
 import com.gasparian.rob.feature.milestones.domain.repository.MilestonesRepository
 import com.gasparian.rob.feature.profile.domain.repository.ProfileRepository
 import com.gasparian.rob.feature.skills.domain.repository.SkillsRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 
@@ -41,6 +44,30 @@ class CompositeRcvHomeRepository(
                 milestones = milestones,
             ),
         )
+    }
+
+    override suspend fun clearCache() {
+        coroutineScope {
+            awaitAll(
+                async { profileRepository.clearCache() },
+                async { skillsRepository.clearCache() },
+                async { experienceRepository.clearCache() },
+                async { educationRepository.clearCache() },
+                async { milestonesRepository.clearCache() },
+            )
+        }
+    }
+
+    override suspend fun sync() {
+        coroutineScope {
+            awaitAll(
+                async { profileRepository.sync() },
+                async { skillsRepository.sync() },
+                async { experienceRepository.sync() },
+                async { educationRepository.sync() },
+                async { milestonesRepository.sync() },
+            )
+        }
     }
 }
 

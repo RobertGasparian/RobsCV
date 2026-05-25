@@ -4,18 +4,21 @@ import kotlinx.datetime.LocalDate
 
 data class EducationUiState(
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
     val education: EducationUiModel?,
     val errorMessage: String?,
 ) {
     companion object {
         fun initialState() = EducationUiState(
             isLoading = true,
+            isRefreshing = false,
             education = null,
             errorMessage = null,
         )
 
         fun preview() = EducationUiState(
             isLoading = false,
+            isRefreshing = false,
             education =
             EducationUiModel(
                 institutions =

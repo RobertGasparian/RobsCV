@@ -27,9 +27,40 @@ class GetHomeDataUseCaseTest {
         assertEquals(expected, useCase().first())
     }
 
+    @Test
+    fun `clear home cache delegates to repository`() = runTest {
+        val repository = FakeHomeRepository(flowOf(HomeResult.Success(homeData())))
+        val useCase = ClearHomeCacheUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.clearCacheCallCount)
+    }
+
+    @Test
+    fun `sync home delegates to repository`() = runTest {
+        val repository = FakeHomeRepository(flowOf(HomeResult.Success(homeData())))
+        val useCase = SyncHomeUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.syncCallCount)
+    }
+
     private class FakeHomeRepository(
         override val homeData: Flow<HomeResult<HomeData>>,
-    ) : HomeRepository
+    ) : HomeRepository {
+        var clearCacheCallCount = 0
+        var syncCallCount = 0
+
+        override suspend fun clearCache() {
+            clearCacheCallCount++
+        }
+
+        override suspend fun sync() {
+            syncCallCount++
+        }
+    }
 
     private fun homeData() = HomeData(
         profile =

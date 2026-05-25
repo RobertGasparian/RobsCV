@@ -2,18 +2,21 @@ package com.gasparian.rob.feature.profile.presentation
 
 data class ProfileUiState(
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
     val profile: ProfileUiModel?,
     val errorMessage: String?,
 ) {
     companion object {
         fun initialState() = ProfileUiState(
             isLoading = true,
+            isRefreshing = false,
             profile = null,
             errorMessage = null,
         )
 
         fun preview() = ProfileUiState(
             isLoading = false,
+            isRefreshing = false,
             profile =
             ProfileUiModel(
                 id = "profile-robert-gasparyan",

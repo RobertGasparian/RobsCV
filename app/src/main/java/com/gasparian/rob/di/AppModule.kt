@@ -1,16 +1,15 @@
 package com.gasparian.rob.di
 
 import androidx.room.Room
+import com.gasparian.rob.core.data.network.createRcvMockAssetHttpClient
 import com.gasparian.rob.core.network.KtorRcvNetworkClient
 import com.gasparian.rob.core.network.RcvNetworkClient
 import com.gasparian.rob.core.network.RcvNetworkConfig
 import com.gasparian.rob.core.network.RcvNetworkConstants
-import com.gasparian.rob.core.network.createRcvHttpClient
 import com.gasparian.rob.core.network.createRcvJson
 import com.gasparian.rob.database.RCV_DATABASE_NAME
 import com.gasparian.rob.database.RcvDatabase
 import com.gasparian.rob.database.buildRcvDatabase
-import io.ktor.client.engine.android.Android
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -25,8 +24,8 @@ val appModule =
             )
         }
         single {
-            createRcvHttpClient(
-                engineFactory = Android,
+            createRcvMockAssetHttpClient(
+                context = androidContext(),
                 config = get(),
                 json = get(),
             )

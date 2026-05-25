@@ -5,4 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface EducationRepository {
     val education: Flow<Result<Education>>
+
+    suspend fun sync()
+
+    suspend fun clearCache()
 }

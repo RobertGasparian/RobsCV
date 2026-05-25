@@ -39,14 +39,19 @@ interface MilestonesDao {
     suspend fun replaceMilestones(
         graph: MilestonesEntityGraph,
     ) {
-        clearMilestoneTopics()
-        clearMilestones()
-        clearCurrentFocusTopics()
-        clearCurrentFocus()
+        clearMilestonesCache()
         upsertCurrentFocus(graph.currentFocus)
         upsertCurrentFocusTopics(graph.currentFocusTopics)
         upsertMilestones(graph.milestones)
         upsertMilestoneTopics(graph.milestoneTopics)
+    }
+
+    @Transaction
+    suspend fun clearMilestonesCache() {
+        clearMilestoneTopics()
+        clearMilestones()
+        clearCurrentFocusTopics()
+        clearCurrentFocus()
     }
 
     @Query("SELECT * FROM rcv_current_focus WHERE id = :id")

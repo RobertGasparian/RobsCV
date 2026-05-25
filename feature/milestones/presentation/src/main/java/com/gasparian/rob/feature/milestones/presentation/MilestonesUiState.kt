@@ -4,18 +4,21 @@ import kotlinx.datetime.LocalDate
 
 data class MilestonesUiState(
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
     val milestones: MilestonesUiModel?,
     val errorMessage: String?,
 ) {
     companion object {
         fun initialState() = MilestonesUiState(
             isLoading = true,
+            isRefreshing = false,
             milestones = null,
             errorMessage = null,
         )
 
         fun preview() = MilestonesUiState(
             isLoading = false,
+            isRefreshing = false,
             milestones =
             MilestonesUiModel(
                 currentFocus =

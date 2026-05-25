@@ -1,19 +1,27 @@
 package com.gasparian.rob.feature.profile.ui.screen
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.gasparian.rob.feature.profile.presentation.ProfileViewModel
 import com.gasparian.rob.feature.profile.ui.component.RcvProfileComponent
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RcvProfileScreen(
     onOpenProfileSection: (sectionId: String) -> Unit,
+    viewModel: ProfileViewModel = koinViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     RcvProfileComponent(
         title = "Profile",
-        description = "Education, contact shortcuts, milestones, and supporting info.",
-        color = Color(0xFF735B00),
+        uiState = uiState,
         buttonLabel = "Open profile detail",
+        clearCacheLabel = "Clear profile cache",
         onButtonClick = { onOpenProfileSection("contact") },
+        onClearCacheClick = viewModel::clearCache,
+        onRefresh = viewModel::refresh,
     )
 }
 
@@ -21,12 +29,17 @@ fun RcvProfileScreen(
 fun RcvProfileDetailScreen(
     sectionId: String,
     onBackClick: () -> Unit,
+    viewModel: ProfileViewModel = koinViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     RcvProfileComponent(
-        title = "Profile detail",
-        description = "Selected profile section: $sectionId",
-        color = Color(0xFF574400),
+        title = "Profile detail: $sectionId",
+        uiState = uiState,
         buttonLabel = "Back",
+        clearCacheLabel = "Clear profile cache",
         onButtonClick = onBackClick,
+        onClearCacheClick = viewModel::clearCache,
+        onRefresh = viewModel::refresh,
     )
 }

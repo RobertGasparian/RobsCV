@@ -34,6 +34,8 @@ class NetworkBackedRcvProfileRepositoryTest {
             currentTimeMillis = { 123L },
         )
 
+        repository.sync()
+
         repository.profile.test {
             val item = awaitItem()
 
@@ -73,6 +75,22 @@ class NetworkBackedRcvProfileRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `clearCache clears dao cache without syncing remote data`() = runTest {
+        val dao = FakeRcvProfileDao(initialGraph = profileResponse.toEntityGraph(updatedAtMillis = 111L))
+        val remoteDataSource = mockk<ProfileRemoteDataSource>()
+        val repository = NetworkBackedRcvProfileRepository(
+            remoteDataSource = remoteDataSource,
+            profileDao = dao,
+            currentTimeMillis = { 222L },
+        )
+
+        repository.clearCache()
+
+        assertEquals(1, dao.clearProfileCacheCallCount)
+        assertEquals(null, dao.lastReplacedGraph)
+    }
 }
 
 private class FakeRcvProfileDao(
@@ -80,6 +98,7 @@ private class FakeRcvProfileDao(
 ) : ProfileDao {
     private val graphFlow = MutableStateFlow(initialGraph)
     var lastReplacedGraph: ProfileEntityGraph? = null
+    var clearProfileCacheCallCount = 0
 
     override fun profileGraphFlow(): Flow<ProfileEntityGraph?> = graphFlow
 
@@ -89,6 +108,11 @@ private class FakeRcvProfileDao(
     }
 
     override suspend fun getProfileGraph(): ProfileEntityGraph? = graphFlow.value
+    override suspend fun clearProfileCache() {
+        clearProfileCacheCallCount++
+        graphFlow.value = null
+    }
+
     override suspend fun getProfile(): ProfileEntity? = error("Unused")
     override fun profileFlow(): Flow<ProfileEntity?> = error("Unused")
     override fun locationsFlow(): Flow<List<ProfileLocationEntity>> = error("Unused")

@@ -9,7 +9,6 @@ import com.gasparian.rob.feature.experience.domain.model.Experience
 import com.gasparian.rob.feature.experience.domain.repository.ExperienceRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvExperienceRepository(
     private val remoteDataSource: ExperienceRemoteDataSource,
@@ -24,11 +23,12 @@ class NetworkBackedRcvExperienceRepository(
                 ?.let(Result.Companion::success)
                 ?: Result.failure(IllegalStateException("Experience cache is empty"))
         }
-        .onStart {
-            syncExperienceFromRemote()
-        }
 
-    private suspend fun syncExperienceFromRemote() {
+    override suspend fun clearCache() {
+        experienceDao.clearExperienceCache()
+    }
+
+    override suspend fun sync() {
         when (val remoteResult = remoteDataSource.getExperience()) {
             is RcvNetworkResult.Failure -> Unit
             is RcvNetworkResult.Success -> experienceDao.replaceExperience(remoteResult.data.toEntityGraph())

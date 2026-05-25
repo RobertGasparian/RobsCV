@@ -24,10 +24,40 @@ class GetMilestonesUseCaseTest {
 
         assertEquals(Result.success(expected), useCase().first())
     }
+
+    @Test
+    fun `clear milestones cache delegates to repository`() = runTest {
+        val repository = FakeMilestonesRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = ClearMilestonesCacheUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.clearCacheCallCount)
+    }
+
+    @Test
+    fun `sync milestones delegates to repository`() = runTest {
+        val repository = FakeMilestonesRepository(Result.failure(IllegalStateException("Unused")))
+        val useCase = SyncMilestonesUseCase(repository)
+
+        useCase()
+
+        assertEquals(1, repository.syncCallCount)
+    }
 }
 
 private class FakeMilestonesRepository(
     result: Result<Milestones>,
 ) : MilestonesRepository {
     override val milestones: Flow<Result<Milestones>> = flowOf(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }

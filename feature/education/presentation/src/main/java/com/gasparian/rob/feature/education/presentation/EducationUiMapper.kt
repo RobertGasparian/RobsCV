@@ -13,6 +13,7 @@ internal fun Result<Education>.toEducationUiState(): EducationUiState = fold(
     onSuccess = { education ->
         EducationUiState(
             isLoading = false,
+            isRefreshing = false,
             education = education.toUiModel(),
             errorMessage = null,
         )
@@ -20,6 +21,7 @@ internal fun Result<Education>.toEducationUiState(): EducationUiState = fold(
     onFailure = { throwable ->
         EducationUiState(
             isLoading = false,
+            isRefreshing = false,
             education = null,
             errorMessage = throwable.toUiErrorMessage(),
         )

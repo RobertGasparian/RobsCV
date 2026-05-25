@@ -8,6 +8,7 @@ internal fun Result<Experience>.toExperienceUiState(): ExperienceUiState = fold(
     onSuccess = { experience ->
         ExperienceUiState(
             isLoading = false,
+            isRefreshing = false,
             experience = experience.toUiModel(),
             errorMessage = null,
         )
@@ -15,6 +16,7 @@ internal fun Result<Experience>.toExperienceUiState(): ExperienceUiState = fold(
     onFailure = { throwable ->
         ExperienceUiState(
             isLoading = false,
+            isRefreshing = false,
             experience = null,
             errorMessage = throwable.toUiErrorMessage(),
         )

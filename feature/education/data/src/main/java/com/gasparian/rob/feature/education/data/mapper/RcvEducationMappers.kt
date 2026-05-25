@@ -2,6 +2,7 @@ package com.gasparian.rob.feature.education.data.mapper
 
 import com.gasparian.rob.core.network.RcvNetworkError
 import com.gasparian.rob.feature.education.data.local.EducationEntityGraph
+import com.gasparian.rob.feature.education.data.local.EducationEntityReadGraph
 import com.gasparian.rob.feature.education.data.local.EducationItemEntity
 import com.gasparian.rob.feature.education.data.local.EducationLocationEntity
 import com.gasparian.rob.feature.education.data.local.InstitutionEntity
@@ -93,6 +94,49 @@ internal fun EducationEntityGraph.toDomain(): Education = Education(
             status = item.status.toEducationStatus(),
         )
     },
+)
+
+internal fun EducationEntityReadGraph.toDomain(): Education = Education(
+    institutions =
+    institutions.map { institutionGraph ->
+        val institution = institutionGraph.institution
+        val location = institutionGraph.location
+        Institution(
+            id = institution.id,
+            name = institution.name,
+            shortName = institution.shortName,
+            type = institution.type.toInstitutionType(),
+            description = institution.description,
+            websiteUrl = institution.websiteUrl,
+            location =
+            EducationLocation(
+                city = location.city,
+                region = location.region,
+                country = location.country,
+                addressLine = location.addressLine,
+            ),
+        )
+    },
+    items =
+    institutions
+        .flatMap { institutionGraph -> institutionGraph.items }
+        .sortedByDescending(EducationItemEntity::startDate)
+        .map { item ->
+            EducationItem(
+                id = item.id,
+                institutionId = item.institutionId,
+                faculty = item.facultyName?.let(::Faculty),
+                program =
+                EducationProgram(
+                    name = item.programName,
+                    credential = item.credential,
+                    fieldOfStudy = item.fieldOfStudy,
+                ),
+                startDate = LocalDate.parse(item.startDate),
+                endDate = LocalDate.parse(item.endDate),
+                status = item.status.toEducationStatus(),
+            )
+        },
 )
 
 internal fun RcvNetworkError.toException(): Throwable = IllegalStateException(toString())

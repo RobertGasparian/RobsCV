@@ -7,6 +7,7 @@ import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.get
 import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
+import kotlinx.coroutines.delay
 import kotlinx.io.IOException
 import kotlinx.serialization.SerializationException
 import kotlin.coroutines.cancellation.CancellationException
@@ -18,6 +19,8 @@ class KtorRcvNetworkClient(
         path: String,
         responseMapper: suspend RcvNetworkResponse.() -> T,
     ): RcvNetworkResult<T> = safeNetworkCall {
+        // TODO Remove this artificial delay once RobsCV uses a real backend server.
+        delay(750)
         val response = httpClient.get(path)
         if (response.status.isSuccess()) {
             RcvNetworkResult.Success(responseMapper(RcvNetworkResponse(response)))

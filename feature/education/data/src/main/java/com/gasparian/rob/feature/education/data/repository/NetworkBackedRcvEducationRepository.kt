@@ -9,7 +9,6 @@ import com.gasparian.rob.feature.education.domain.model.Education
 import com.gasparian.rob.feature.education.domain.repository.EducationRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class NetworkBackedRcvEducationRepository(
     private val remoteDataSource: EducationRemoteDataSource,
@@ -24,11 +23,12 @@ class NetworkBackedRcvEducationRepository(
                 ?.let(Result.Companion::success)
                 ?: Result.failure(IllegalStateException("Education cache is empty"))
         }
-        .onStart {
-            syncEducationFromRemote()
-        }
 
-    private suspend fun syncEducationFromRemote() {
+    override suspend fun clearCache() {
+        educationDao.clearEducationCache()
+    }
+
+    override suspend fun sync() {
         when (val remoteResult = remoteDataSource.getEducation()) {
             is RcvNetworkResult.Failure -> Unit
             is RcvNetworkResult.Success -> educationDao.replaceEducation(remoteResult.data.toEntityGraph())

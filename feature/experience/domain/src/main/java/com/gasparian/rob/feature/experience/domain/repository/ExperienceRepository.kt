@@ -5,4 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface ExperienceRepository {
     val experience: Flow<Result<Experience>>
+
+    suspend fun sync()
+
+    suspend fun clearCache()
 }

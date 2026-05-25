@@ -39,14 +39,19 @@ interface ProfileDao {
     suspend fun replaceProfile(
         graph: ProfileEntityGraph,
     ) {
-        clearQualifications()
-        clearProfile()
-        clearContacts()
-        clearLocations()
+        clearProfileCache()
         upsertLocation(graph.location)
         upsertContact(graph.contact)
         upsertProfile(graph.profile)
         upsertQualifications(graph.qualifications)
+    }
+
+    @Transaction
+    suspend fun clearProfileCache() {
+        clearQualifications()
+        clearProfile()
+        clearContacts()
+        clearLocations()
     }
 
     @Query("SELECT * FROM rcv_profile LIMIT 1")

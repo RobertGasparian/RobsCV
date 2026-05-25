@@ -32,12 +32,17 @@ interface SkillsDao {
     suspend fun replaceSkills(
         graph: SkillsEntityGraph,
     ) {
-        clearContexts()
-        clearSkills()
-        clearCategories()
+        clearSkillsCache()
         upsertCategories(graph.categories)
         upsertSkills(graph.skills)
         upsertContexts(graph.contexts)
+    }
+
+    @Transaction
+    suspend fun clearSkillsCache() {
+        clearContexts()
+        clearSkills()
+        clearCategories()
     }
 
     @Query("SELECT * FROM rcv_skill_category ORDER BY name")

@@ -2,18 +2,21 @@ package com.gasparian.rob.feature.skills.presentation
 
 data class SkillsUiState(
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
     val skills: SkillsUiModel?,
     val errorMessage: String?,
 ) {
     companion object {
         fun initialState() = SkillsUiState(
             isLoading = true,
+            isRefreshing = false,
             skills = null,
             errorMessage = null,
         )
 
         fun preview() = SkillsUiState(
             isLoading = false,
+            isRefreshing = false,
             skills =
             SkillsUiModel(
                 categories =

@@ -28,6 +28,8 @@ class NetworkBackedRcvExperienceRepositoryTest {
         coEvery { remoteDataSource.getExperience() } returns RcvNetworkResult.Success(experienceResponse)
         val repository = NetworkBackedRcvExperienceRepository(remoteDataSource = remoteDataSource, experienceDao = dao)
 
+        repository.sync()
+
         repository.experience.test {
             val item = awaitItem()
 
@@ -68,6 +70,18 @@ class NetworkBackedRcvExperienceRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `clearCache clears dao cache without syncing remote data`() = runTest {
+        val dao = FakeRcvExperienceDao(initialGraph = experienceResponse.toEntityGraph())
+        val remoteDataSource = mockk<ExperienceRemoteDataSource>()
+        val repository = NetworkBackedRcvExperienceRepository(remoteDataSource = remoteDataSource, experienceDao = dao)
+
+        repository.clearCache()
+
+        assertEquals(1, dao.clearExperienceCacheCallCount)
+        assertEquals(null, dao.lastReplacedGraph)
+    }
 }
 
 private class FakeRcvExperienceDao(
@@ -75,6 +89,7 @@ private class FakeRcvExperienceDao(
 ) : ExperienceDao {
     private val graphFlow = MutableStateFlow(initialGraph)
     var lastReplacedGraph: ExperienceEntityGraph? = null
+    var clearExperienceCacheCallCount = 0
 
     override fun experienceGraphFlow(): Flow<ExperienceEntityGraph> = graphFlow
 
@@ -84,6 +99,11 @@ private class FakeRcvExperienceDao(
     }
 
     override suspend fun getExperienceGraph(): ExperienceEntityGraph = graphFlow.value
+    override suspend fun clearExperienceCache() {
+        clearExperienceCacheCallCount++
+        graphFlow.value = ExperienceEntityGraph(emptyList(), emptyList())
+    }
+
     override suspend fun getRoles(): List<ExperienceRoleEntity> = error("Unused")
     override fun rolesFlow(): Flow<List<ExperienceRoleEntity>> = error("Unused")
     override suspend fun getHighlights(): List<ExperienceHighlightEntity> = error("Unused")

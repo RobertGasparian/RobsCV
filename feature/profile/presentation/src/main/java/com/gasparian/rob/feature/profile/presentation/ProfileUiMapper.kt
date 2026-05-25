@@ -9,6 +9,7 @@ internal fun Result<Profile>.toProfileUiState(): ProfileUiState = fold(
     onSuccess = { profile ->
         ProfileUiState(
             isLoading = false,
+            isRefreshing = false,
             profile = profile.toUiModel(),
             errorMessage = null,
         )
@@ -16,6 +17,7 @@ internal fun Result<Profile>.toProfileUiState(): ProfileUiState = fold(
     onFailure = { throwable ->
         ProfileUiState(
             isLoading = false,
+            isRefreshing = false,
             profile = null,
             errorMessage = throwable.toUiErrorMessage(),
         )

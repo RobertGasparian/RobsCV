@@ -16,10 +16,13 @@ import com.gasparian.rob.feature.profile.domain.model.ProfileLocation
 import com.gasparian.rob.feature.profile.domain.repository.ProfileRepository
 import com.gasparian.rob.feature.skills.domain.model.Skills
 import com.gasparian.rob.feature.skills.domain.repository.SkillsRepository
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Test
 
@@ -63,36 +66,185 @@ class CompositeRcvHomeRepositoryTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `clearCache delegates to every composed feature repository`() = runTest {
+        val profileRepository = FakeProfileRepository(Result.success(profile))
+        val skillsRepository = FakeSkillsRepository(Result.success(skills))
+        val experienceRepository = FakeExperienceRepository(Result.success(experience))
+        val educationRepository = FakeEducationRepository(Result.success(education))
+        val milestonesRepository = FakeMilestonesRepository(Result.success(milestones))
+        val repository = CompositeRcvHomeRepository(
+            profileRepository = profileRepository,
+            skillsRepository = skillsRepository,
+            experienceRepository = experienceRepository,
+            educationRepository = educationRepository,
+            milestonesRepository = milestonesRepository,
+        )
+
+        repository.clearCache()
+
+        assertEquals(1, profileRepository.clearCacheCallCount)
+        assertEquals(1, skillsRepository.clearCacheCallCount)
+        assertEquals(1, experienceRepository.clearCacheCallCount)
+        assertEquals(1, educationRepository.clearCacheCallCount)
+        assertEquals(1, milestonesRepository.clearCacheCallCount)
+    }
+
+    @Test
+    fun `clearCache runs feature cache clears concurrently and waits for all to finish`() = runTest {
+        val startedClears = mutableListOf<String>()
+        val finishedClears = mutableListOf<String>()
+        val allClearsStarted = CompletableDeferred<Unit>()
+        val releaseClears = CompletableDeferred<Unit>()
+
+        fun onClear(name: String): suspend () -> Unit = {
+            startedClears += name
+            if (startedClears.size == 5) {
+                allClearsStarted.complete(Unit)
+            }
+            releaseClears.await()
+            finishedClears += name
+        }
+
+        val repository = CompositeRcvHomeRepository(
+            profileRepository = FakeProfileRepository(Result.success(profile), onClear("profile")),
+            skillsRepository = FakeSkillsRepository(Result.success(skills), onClear("skills")),
+            experienceRepository = FakeExperienceRepository(Result.success(experience), onClear("experience")),
+            educationRepository = FakeEducationRepository(Result.success(education), onClear("education")),
+            milestonesRepository = FakeMilestonesRepository(Result.success(milestones), onClear("milestones")),
+        )
+        val clearFinished = CompletableDeferred<Unit>()
+
+        launch {
+            repository.clearCache()
+            clearFinished.complete(Unit)
+        }
+
+        allClearsStarted.await()
+        assertEquals(listOf("profile", "skills", "experience", "education", "milestones"), startedClears)
+        assertEquals(emptyList<String>(), finishedClears)
+        assertFalse(clearFinished.isCompleted)
+
+        releaseClears.complete(Unit)
+        clearFinished.await()
+
+        assertEquals(listOf("profile", "skills", "experience", "education", "milestones"), finishedClears)
+    }
+
+    @Test
+    fun `sync delegates to every composed feature repository`() = runTest {
+        val profileRepository = FakeProfileRepository(Result.success(profile))
+        val skillsRepository = FakeSkillsRepository(Result.success(skills))
+        val experienceRepository = FakeExperienceRepository(Result.success(experience))
+        val educationRepository = FakeEducationRepository(Result.success(education))
+        val milestonesRepository = FakeMilestonesRepository(Result.success(milestones))
+        val repository = CompositeRcvHomeRepository(
+            profileRepository = profileRepository,
+            skillsRepository = skillsRepository,
+            experienceRepository = experienceRepository,
+            educationRepository = educationRepository,
+            milestonesRepository = milestonesRepository,
+        )
+
+        repository.sync()
+
+        assertEquals(1, profileRepository.syncCallCount)
+        assertEquals(1, skillsRepository.syncCallCount)
+        assertEquals(1, experienceRepository.syncCallCount)
+        assertEquals(1, educationRepository.syncCallCount)
+        assertEquals(1, milestonesRepository.syncCallCount)
+    }
 }
 
 private class FakeProfileRepository(
     result: Result<Profile>,
+    private val onClear: suspend () -> Unit = {},
 ) : ProfileRepository {
     override val profile: Flow<Result<Profile>> = MutableStateFlow(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+        onClear()
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }
 
 private class FakeSkillsRepository(
     result: Result<Skills>,
+    private val onClear: suspend () -> Unit = {},
 ) : SkillsRepository {
     override val skills: Flow<Result<Skills>> = MutableStateFlow(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+        onClear()
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }
 
 private class FakeExperienceRepository(
     result: Result<Experience>,
+    private val onClear: suspend () -> Unit = {},
 ) : ExperienceRepository {
     override val experience: Flow<Result<Experience>> = MutableStateFlow(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+        onClear()
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }
 
 private class FakeEducationRepository(
     result: Result<Education>,
+    private val onClear: suspend () -> Unit = {},
 ) : EducationRepository {
     override val education: Flow<Result<Education>> = MutableStateFlow(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+        onClear()
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }
 
 private class FakeMilestonesRepository(
     result: Result<Milestones>,
+    private val onClear: suspend () -> Unit = {},
 ) : MilestonesRepository {
     override val milestones: Flow<Result<Milestones>> = MutableStateFlow(result)
+    var clearCacheCallCount = 0
+    var syncCallCount = 0
+
+    override suspend fun clearCache() {
+        clearCacheCallCount++
+        onClear()
+    }
+
+    override suspend fun sync() {
+        syncCallCount++
+    }
 }
 
 private val profile = Profile(

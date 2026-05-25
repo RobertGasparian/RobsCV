@@ -4,18 +4,21 @@ import kotlinx.datetime.LocalDate
 
 data class ExperienceUiState(
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
     val experience: ExperienceUiModel?,
     val errorMessage: String?,
 ) {
     companion object {
         fun initialState() = ExperienceUiState(
             isLoading = true,
+            isRefreshing = false,
             experience = null,
             errorMessage = null,
         )
 
         fun preview() = ExperienceUiState(
             isLoading = false,
+            isRefreshing = false,
             experience =
             ExperienceUiModel(
                 roles =

@@ -27,7 +27,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:home:domain"))
+    api(project(":feature:home:domain"))
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.core)
